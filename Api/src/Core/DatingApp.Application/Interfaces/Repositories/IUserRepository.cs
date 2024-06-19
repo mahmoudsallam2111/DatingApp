@@ -1,4 +1,5 @@
-﻿using DatingApp.Domain.Entities;
+﻿using DatingApp.Application.Dtos;
+using DatingApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace DatingApp.Application.Interfaces.Repositories
 {
     public interface IUserRepository : IGenericRepository<AppUser>
     {
-
+        Task<AppUser?> FindByUserName(string name);
     }
 }

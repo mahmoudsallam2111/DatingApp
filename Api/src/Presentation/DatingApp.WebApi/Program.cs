@@ -1,5 +1,6 @@
 using DatingApp.Application;
 using DatingApp.Infrastructure.Persistence;
+using DatingApp.WebApi.Infrastracture.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +13,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 builder.Services.AddApplicationLayer();
-
-
+builder.Services.AddAnyCors();
+builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 
 
 #endregion
@@ -33,6 +34,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAnyCors();
+
+app.UseAuthenticationAndAuthorization();
 
 app.UseAuthorization();
 
