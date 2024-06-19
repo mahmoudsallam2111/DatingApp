@@ -21,5 +21,12 @@ namespace DatingApp.WebApi.Controllers.User
         {
             return  await _user.GetUserById(id);
         }
+
+        [HttpGet("getAllUers")]
+        public async Task<ActionResult<IReadOnlyList<GetUserDto>>> GetUsers()
+        {
+            var users =  await _user.GetUsers();
+            return Ok(users);
+        }
     }
 }

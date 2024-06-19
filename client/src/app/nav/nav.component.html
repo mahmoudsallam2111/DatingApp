@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Dating App</a>
+
+    @if (currentUser$ | async) {
+
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="#">Matches</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" aria-disabled="true">Messages</a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          (click)="logout()"
+          class="nav-link"
+          href="#"
+          tabindex="-1"
+          aria-disabled="true"
+          >Logout</a
+        >
+      </li>
+    </ul>
+
+    <div class="btn-group" dropdown>
+      <a
+        dropdownToggle
+        class="text-light dropdown-toggle text-decoration-none"
+        aria-controls="dropdown-basic"
+      >
+        Welcome User <span class="caret"></span>
+      </a>
+      <ul
+        id="dropdown-basic"
+        *dropdownMenu
+        class="dropdown-menu"
+        role="menu"
+        aria-labelledby="button-basic"
+      >
+        <li role="menuitem"><a class="dropdown-item">Edit Profile</a></li>
+        <li role="menuitem">
+          <a class="dropdown-item" (click)="logout()">logout</a>
+        </li>
+      </ul>
+    </div>
+
+    }
+
+    <form
+      *ngIf="!(currentUser$ | async)"
+      #lofinForm="ngForm"
+      class="d-flex"
+      (ngSubmit)="login()"
+      autocomplete="off"
+    >
+      <input
+        name="username"
+        [(ngModel)]="model.username"
+        class="form-control me-2"
+        type="text"
+        placeholder="UserName"
+      />
+      <input
+        name="Password"
+        [(ngModel)]="model.password"
+        class="form-control me-2"
+        type="text"
+        placeholder="Password"
+      />
+      <button class="btn btn-outline-success" type="submit">Login</button>
+    </form>
+  </div>
+</nav>

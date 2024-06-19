@@ -1,4 +1,5 @@
-﻿using DatingApp.Application.Dtos;
+﻿using AutoMapper;
+using DatingApp.Application.Dtos;
 using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
 using DatingApp.Application.Interfaces.Users;
@@ -11,12 +12,17 @@ namespace DatingApp.Application.Features.Users
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserAppService(IUserRepository userRepository  , ITokenService tokenService, IUnitOfWork unitOfWork)
+        public UserAppService(IUserRepository userRepository,
+            ITokenService tokenService,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public async Task<GetUserDto> GetUserById(int id)
         {
@@ -26,6 +32,12 @@ namespace DatingApp.Application.Features.Users
                 Id = res.Id,
                 Name = res.Name,
             };
+        }
+
+        public async Task<IReadOnlyList<GetUserDto>> GetUsers()
+        {
+            var users = await _userRepository.GetAllAsync();
+            return _mapper.Map<IReadOnlyList<AppUser>, IReadOnlyList<GetUserDto>>(users);
         }
 
         public async Task<GetUserDto?> LoginUser(LoginDto loginDto)
