@@ -1,18 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">Dating App</a>
+    <a class="navbar-brand" routerLink="/" routerLinkActive="active"
+      >Dating App</a
+    >
 
     @if (currentUser$ | async) {
 
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="#">Matches</a>
+        <a
+          class="nav-link"
+          aria-current="page"
+          routerLink="/members"
+          routerLinkActive="active"
+          >Matches</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">List</a>
+        <a class="nav-link" routerLink="/lists" routerLinkActive="active"
+          >List</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" aria-disabled="true">Messages</a>
+        <a class="nav-link" routerLink="/messages" routerLinkActive="active"
+          >Messages</a
+        >
       </li>
 
       <li class="nav-item">
@@ -27,13 +39,18 @@
       </li>
     </ul>
 
-    <div class="btn-group" dropdown>
+    <div
+      *ngIf="currentUser$ | async as loggedinuser"
+      class="btn-group"
+      dropdown
+    >
       <a
         dropdownToggle
         class="text-light dropdown-toggle text-decoration-none"
         aria-controls="dropdown-basic"
       >
-        Welcome User <span class="caret"></span>
+        Welcome {{ loggedinuser.userName | titlecase }}
+        <span class="caret"></span>
       </a>
       <ul
         id="dropdown-basic"

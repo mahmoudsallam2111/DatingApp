@@ -34,7 +34,7 @@ namespace DatingApp.WebApi.Controllers.Accounts
         public async Task<ActionResult<UserLoginDto>> Login(LoginDto loginDto)
         {
             var user =await _userAppService.LoginUser(loginDto);
-            if (user is null) return Unauthorized();
+            if (user is null) return Unauthorized("Invalid User");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
@@ -42,7 +42,7 @@ namespace DatingApp.WebApi.Controllers.Accounts
             {
                 if (computedHash[i] != user.PasswordHash[i])
                 {
-                    return Unauthorized("Invalid Password or User name");
+                    return Unauthorized("Invalid Password");
                 }
             }
             UserLoginDto userLoginDto = new UserLoginDto
