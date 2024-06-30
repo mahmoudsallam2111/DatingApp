@@ -1,5 +1,5 @@
 ﻿using DatingApp.Application.Interfaces.Repositories;
-using DatingApp.Domain.Entities;
+using DatingApp.Domain.Aggregates.AppUser.Entities;
 using DatingApp.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,7 +21,24 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
 
         public async Task<AppUser?> FindByUserName(string name)
         {
-            return await _dbContext.Users.SingleOrDefaultAsync(u=>u.Name == name);
+            return await _dbContext.Users
+                .Include(u => u.Photos)
+                .SingleOrDefaultAsync(u=>u.Name == name);
+        }
+
+        public override async Task<IReadOnlyList<AppUser>> GetAllAsync()
+        {
+            return await _dbContext.Users
+                   .Include(u => u.Photos)
+                   .AsNoTracking()
+                   .ToListAsync();
+        }
+
+        public override async Task<AppUser> GetByIdAsync(int id)
+        {
+            return await _dbContext.Users
+                .Include(u => u.Photos)
+                .SingleAsync(u => u.Id == id);
         }
     }
 }

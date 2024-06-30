@@ -25,7 +25,7 @@ namespace DatingApp.WebApi.Controllers.Accounts
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUserDto.Password));
             var passwordSalt = hmac.Key;
 
-          var user =  await _userAppService.RegisterUser(registerUserDto.UserName, passwordHash, passwordSalt);
+          var user =  await _userAppService.RegisterUser(registerUserDto.Name, passwordHash, passwordSalt);
           return Ok(user);
 
         }
@@ -47,7 +47,8 @@ namespace DatingApp.WebApi.Controllers.Accounts
             }
             UserLoginDto userLoginDto = new UserLoginDto
             {
-                UserName = user.Name,
+                Id = user.Id,
+                Name = user.Name,
                 Token = _tokenService.CreateTokent(user.Name)
             };
             return Ok(userLoginDto);

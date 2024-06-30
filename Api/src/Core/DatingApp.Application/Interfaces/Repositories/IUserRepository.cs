@@ -1,5 +1,5 @@
 ﻿using DatingApp.Application.Dtos;
-using DatingApp.Domain.Entities;
+using DatingApp.Domain.Aggregates.AppUser.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

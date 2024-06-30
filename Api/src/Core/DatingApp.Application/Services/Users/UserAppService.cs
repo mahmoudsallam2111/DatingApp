@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using BuildingBlocks.Exceptions;
 using DatingApp.Application.Dtos;
 using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
 using DatingApp.Application.Interfaces.Users;
-using DatingApp.Domain.Entities;
+using DatingApp.Domain.Aggregates.AppUser.Entities;
 
 namespace DatingApp.Application.Features.Users
 {
@@ -26,12 +27,18 @@ namespace DatingApp.Application.Features.Users
         }
         public async Task<GetUserDto> GetUserById(int id)
         {
-            var res = await _userRepository.GetByIdAsync(id);
-            return new GetUserDto
-            {
-                Id = res.Id,
-                Name = res.Name,
-            };
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user is null)
+                throw new NotFoundException("user is not found");
+            return _mapper.Map<GetUserDto>(user);
+        }
+
+        public async Task<GetUserDto> GetUserByName(string name)
+        {
+           var user = await _userRepository.FindByUserName(name);
+            if (user is null)
+                throw new NotFoundException("user is not found");
+            return _mapper.Map<GetUserDto>(user);
         }
 
         public async Task<IReadOnlyList<GetUserDto>> GetUsers()
@@ -42,7 +49,7 @@ namespace DatingApp.Application.Features.Users
 
         public async Task<GetUserDto?> LoginUser(LoginDto loginDto)
         {
-            var user =await _userRepository.FindByUserName(loginDto.UserName);
+            var user =await _userRepository.FindByUserName(loginDto.Name);
             GetUserDto? getUserDto = null;
             if (user == null)
             {
@@ -74,12 +81,24 @@ namespace DatingApp.Application.Features.Users
             await _unitOfWork.SaveChangesAsync();
             return new UserLoginDto
             { 
-              UserName = user.Name, 
+              Id = user.Id,
+              Name = user.Name, 
               Token = _tokenService.CreateTokent(user.Name)
             };
         }
 
-
+        public async Task UpdateUser(UserUpdateDto userUpdateDto)
+        {
+            var userToUpdate = await _userRepository.GetByIdAsync(userUpdateDto.Id);
+            if (userToUpdate == null) throw new NotFoundException("user is not found");
+             userUpdateDto.Introduction = userUpdateDto.Introduction;
+            userToUpdate.LookingFor = userUpdateDto.LookingFor;
+            userToUpdate.Interests = userUpdateDto.Interests;
+            userToUpdate.Address.City = userUpdateDto.City;
+            userToUpdate.Address.Country = userUpdateDto.Country;
+            _userRepository.Update(userToUpdate);
+            await _unitOfWork.SaveChangesAsync(); 
+        }
 
         private async Task<bool> IsUserExist(string userName)
         {

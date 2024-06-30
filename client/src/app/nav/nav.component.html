@@ -28,6 +28,11 @@
       </li>
 
       <li class="nav-item">
+        <a class="nav-link" routerLink="/serverError" routerLinkActive="active"
+          >Erros</a
+        >
+      </li>
+      <li class="nav-item">
         <a
           (click)="logout()"
           class="nav-link"
@@ -49,7 +54,7 @@
         class="text-light dropdown-toggle text-decoration-none"
         aria-controls="dropdown-basic"
       >
-        Welcome {{ loggedinuser.userName | titlecase }}
+        Welcome {{ loggedinuser.name | titlecase }}
         <span class="caret"></span>
       </a>
       <ul
@@ -59,7 +64,13 @@
         role="menu"
         aria-labelledby="button-basic"
       >
-        <li role="menuitem"><a class="dropdown-item">Edit Profile</a></li>
+        <li role="menuitem">
+          <a
+            routerLink="/member/edit/{{ loggedinuser.id }}"
+            class="dropdown-item"
+            >Edit Profile</a
+          >
+        </li>
         <li role="menuitem">
           <a class="dropdown-item" (click)="logout()">logout</a>
         </li>
@@ -76,8 +87,8 @@
       autocomplete="off"
     >
       <input
-        name="username"
-        [(ngModel)]="model.username"
+        name="name"
+        [(ngModel)]="model.name"
         class="form-control me-2"
         type="text"
         placeholder="UserName"
@@ -86,7 +97,7 @@
         name="Password"
         [(ngModel)]="model.password"
         class="form-control me-2"
-        type="text"
+        type="password"
         placeholder="Password"
       />
       <button class="btn btn-outline-success" type="submit">Login</button>

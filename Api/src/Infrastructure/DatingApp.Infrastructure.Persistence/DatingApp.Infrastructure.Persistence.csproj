@@ -15,8 +15,4 @@
     <ProjectReference Include="..\..\Core\DatingApp.Domain\DatingApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Context\EntityConfiguration\" />
-  </ItemGroup>
-
 </Project>

@@ -1,0 +1,25 @@
+@if (error?.messages) {
+<div class="not-found-container">
+  <div class="content">
+    <span class="error-num">4</span>
+    <div class="eye"></div>
+    <div class="eye"></div>
+    <p class="sub-text">
+      Oh eyeballs! Something went wrong. We're <i>looking</i> to see what
+      happened.
+    </p>
+
+    <p class="text-danger">{{ error.messages }}</p>
+  </div>
+</div>
+}@else{
+<div
+  class="d-flex justify-content-center align-items-center"
+  style="height: 100vh"
+>
+  <h1 class="text-center">No error found</h1>
+</div>
+<div class="container mt-5">
+  <a href="/" class="btn btn-danger">Go back</a>
+</div>
+}

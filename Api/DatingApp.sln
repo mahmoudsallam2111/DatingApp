@@ -11,13 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{13E2C2C2-472E-4B6C-9341-40BC9D59A8C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.Domain", "src\Core\DatingApp.Domain\DatingApp.Domain.csproj", "{B8BBCBD9-322E-4FF1-83C9-B2116DE66A82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp.Domain", "src\Core\DatingApp.Domain\DatingApp.Domain.csproj", "{B8BBCBD9-322E-4FF1-83C9-B2116DE66A82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.Application", "src\Core\DatingApp.Application\DatingApp.Application.csproj", "{ABF8DF77-26A4-4743-8C83-C28EC302A4C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp.Application", "src\Core\DatingApp.Application\DatingApp.Application.csproj", "{ABF8DF77-26A4-4743-8C83-C28EC302A4C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.Infrastructure.Persistence", "src\Infrastructure\DatingApp.Infrastructure.Persistence\DatingApp.Infrastructure.Persistence.csproj", "{8A3CBB1D-21EE-4583-AB2F-71A14DC80FA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp.Infrastructure.Persistence", "src\Infrastructure\DatingApp.Infrastructure.Persistence\DatingApp.Infrastructure.Persistence.csproj", "{8A3CBB1D-21EE-4583-AB2F-71A14DC80FA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.WebApi", "src\Presentation\DatingApp.WebApi\DatingApp.WebApi.csproj", "{EE5FB024-2BDD-4B65-9963-61478530A450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp.WebApi", "src\Presentation\DatingApp.WebApi\DatingApp.WebApi.csproj", "{EE5FB024-2BDD-4B65-9963-61478530A450}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{63BB2D36-06A0-4303-B3D9-2CBFA3ACD411}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "src\BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj", "{D7B3F2C6-BCC5-4C5A-B720-82D1D35F3771}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{EE5FB024-2BDD-4B65-9963-61478530A450}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE5FB024-2BDD-4B65-9963-61478530A450}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE5FB024-2BDD-4B65-9963-61478530A450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7B3F2C6-BCC5-4C5A-B720-82D1D35F3771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7B3F2C6-BCC5-4C5A-B720-82D1D35F3771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7B3F2C6-BCC5-4C5A-B720-82D1D35F3771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7B3F2C6-BCC5-4C5A-B720-82D1D35F3771}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +61,8 @@ Global
 		{ABF8DF77-26A4-4743-8C83-C28EC302A4C5} = {34779C6E-A9FB-48AF-9B26-FBE326448B57}
 		{8A3CBB1D-21EE-4583-AB2F-71A14DC80FA4} = {67268D98-2CBD-40A5-A0A9-46CD9D593997}
 		{EE5FB024-2BDD-4B65-9963-61478530A450} = {13E2C2C2-472E-4B6C-9341-40BC9D59A8C0}
+		{63BB2D36-06A0-4303-B3D9-2CBFA3ACD411} = {1C7ACB62-1F42-40B9-969A-AF41D7D77CCC}
+		{D7B3F2C6-BCC5-4C5A-B720-82D1D35F3771} = {63BB2D36-06A0-4303-B3D9-2CBFA3ACD411}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53CD0D04-DB93-4A94-BBFD-4C1C090E70EE}

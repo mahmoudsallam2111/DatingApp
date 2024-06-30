@@ -5,7 +5,7 @@ namespace DatingApp.Application.Dtos
     public class RegisterUserDto
     {
         [Required]
-        public string UserName { get; set; }
+        public string Name { get; set; }
         [Required]
         public string Password { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DatingApp.Application.Dtos;
-using DatingApp.Domain.Entities;
+using DatingApp.Domain.Aggregates.AppUser.Entities;
 
 namespace DatingApp.Application.AutoMapper
 {
@@ -8,7 +8,11 @@ namespace DatingApp.Application.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<AppUser, GetUserDto>();
+            CreateMap<AppUser, GetUserDto>()
+                .ForMember(des => des.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain)!.Url)).ReverseMap();
+
+            CreateMap<UserPhoto, UserPhotoDto>().ReverseMap();
+            CreateMap<UserUpdateDto , AppUser>().ReverseMap();
         }
     }
 }
