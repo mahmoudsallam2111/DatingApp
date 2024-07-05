@@ -23,8 +23,7 @@ export class AccountService {
         map((response: AuthUser) => {
           const user = response;
           if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-            this.currentUserSource.next(user); // update the subject observable by the new logged in user
+            this.setcurrentUser(user); // update the subject observable by the new logged in user
           }
         })
       );
@@ -37,8 +36,7 @@ export class AccountService {
         map((response: AuthUser) => {
           const user = response;
           if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-            this.currentUserSource.next(user); // update the subject observable by the new logged in user
+            this.setcurrentUser(user); // update the subject observable by the new logged
           }
           return user;
         })
@@ -46,7 +44,8 @@ export class AccountService {
   }
 
   setcurrentUser(user: AuthUser) {
-    this.currentUserSource.next(user);
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSource.next(user); // update the subject observable by the new logged in user
   }
   logout() {
     localStorage.removeItem('user');

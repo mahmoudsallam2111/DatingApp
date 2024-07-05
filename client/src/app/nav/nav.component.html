@@ -45,16 +45,20 @@
     </ul>
 
     <div
-      *ngIf="currentUser$ | async as loggedinuser"
+      *ngIf="currentUser$ | async as loggedInuser"
       class="btn-group"
       dropdown
     >
+      <img
+        src="{{ loggedInuser.photoUrl || './assets/user.png' }}"
+        alt="user Photo"
+      />
       <a
         dropdownToggle
-        class="text-light dropdown-toggle text-decoration-none"
+        class="text-light dropdown-toggle text-decoration-none align-content-center ms-2"
         aria-controls="dropdown-basic"
       >
-        Welcome {{ loggedinuser.name | titlecase }}
+        Welcome {{ loggedInuser.name | titlecase }}
         <span class="caret"></span>
       </a>
       <ul
@@ -66,7 +70,7 @@
       >
         <li role="menuitem">
           <a
-            routerLink="/member/edit/{{ loggedinuser.id }}"
+            routerLink="/member/edit/{{ loggedInuser.id }}"
             class="dropdown-item"
             >Edit Profile</a
           >

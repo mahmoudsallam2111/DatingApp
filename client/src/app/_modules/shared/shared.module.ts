@@ -5,6 +5,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { LightboxModule } from 'ngx-lightbox';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [],
@@ -17,6 +18,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     }),
     LightboxModule,
     NgxSpinnerModule.forRoot({ type: 'line-spin-fade' }),
+    FileUploadModule,
   ],
   exports: [
     BsDropdownModule,
@@ -24,6 +26,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     TabsModule,
     LightboxModule,
     NgxSpinnerModule,
+    FileUploadModule,
   ],
 })
 export class SharedModule {}

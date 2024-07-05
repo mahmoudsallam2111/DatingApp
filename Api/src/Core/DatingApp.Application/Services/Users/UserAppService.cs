@@ -50,23 +50,23 @@ namespace DatingApp.Application.Features.Users
         public async Task<GetUserDto?> LoginUser(LoginDto loginDto)
         {
             var user =await _userRepository.FindByUserName(loginDto.Name);
-            GetUserDto? getUserDto = null;
-            if (user == null)
-            {
-                return getUserDto;
-            }
-            else
-            {
-                return new GetUserDto
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    PasswordHash = user.PasswordHash,
-                    PasswordSalt = user.PasswordSalt,
-                    
-                };
+            //GetUserDto? getUserDto = null;
+            //if (user == null)
+            //{
+            //    return getUserDto;
+            //}
+            //else
+            //{
+            //    return new GetUserDto
+            //    {
+            //        Id = user.Id,
+            //        Name = user.Name,
+            //        PasswordHash = user.PasswordHash,
+            //        PasswordSalt = user.PasswordSalt,
+            //    };
 
-            }
+            //}
+            return _mapper.Map<GetUserDto?>(user);
 
         }
 

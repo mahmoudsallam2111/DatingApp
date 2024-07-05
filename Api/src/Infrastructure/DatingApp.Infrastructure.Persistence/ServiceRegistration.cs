@@ -18,6 +18,7 @@ namespace DatingApp.Infrastructure.Persistence
                   
             // regitser Unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.RegisterRepositories();
             return services;
         }

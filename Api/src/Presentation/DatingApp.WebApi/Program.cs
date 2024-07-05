@@ -1,4 +1,5 @@
 using DatingApp.Application;
+using DatingApp.Application.Helpers;
 using DatingApp.Infrastructure.Persistence;
 using DatingApp.Infrastructure.Persistence.Context;
 using DatingApp.Infrastructure.Persistence.Context.SeedingData;
@@ -23,7 +24,7 @@ builder.Services.AddAnyCors();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 #endregion
 
 
@@ -42,7 +43,6 @@ using (var scope = app.Services.CreateScope())
     //Seed Data
     await Seed.SeedUser(context);
 }
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

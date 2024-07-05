@@ -33,4 +33,12 @@ export class MembersService {
   updateMember(userUpdateDto: UserUpdateDto) {
     return this._http.put(this.baseUrl + 'User', userUpdateDto);
   }
+
+  setMainPhoto(photoId: number) {
+    return this._http.put(this.baseUrl + `User/set-main-photo/${photoId}`, {});
+  }
+
+  deletePhoto(photoId: number) {
+    return this._http.delete(this.baseUrl + `User/delete-photo/${photoId}`);
+  }
 }
