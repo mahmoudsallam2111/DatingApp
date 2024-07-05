@@ -59,7 +59,7 @@ namespace DatingApp.Application.Services
             };
 
             if (user.Photos.Count == 0) {
-                _ = photo.IsMain == true;
+                photo.IsMain = true;
             } 
 
             user.Photos.Add(photo);

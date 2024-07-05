@@ -5,6 +5,7 @@ using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
 using DatingApp.Application.Interfaces.Users;
 using DatingApp.Domain.Aggregates.AppUser.Entities;
+using DatingApp.Domain.Aggregates.AppUser.ValueObjects;
 
 namespace DatingApp.Application.Features.Users
 {
@@ -50,40 +51,38 @@ namespace DatingApp.Application.Features.Users
         public async Task<GetUserDto?> LoginUser(LoginDto loginDto)
         {
             var user =await _userRepository.FindByUserName(loginDto.Name);
-            //GetUserDto? getUserDto = null;
-            //if (user == null)
-            //{
-            //    return getUserDto;
-            //}
-            //else
-            //{
-            //    return new GetUserDto
-            //    {
-            //        Id = user.Id,
-            //        Name = user.Name,
-            //        PasswordHash = user.PasswordHash,
-            //        PasswordSalt = user.PasswordSalt,
-            //    };
-
-            //}
             return _mapper.Map<GetUserDto?>(user);
-
         }
 
-        public async Task<UserLoginDto> RegisterUser(string userName, byte[] passwoedHash, byte[] passwoedSalt)
+        public async Task<UserLoginDto> RegisterUser(RegisterUserDto registerUserDto, byte[] passwoedHash, byte[] passwoedSalt)
         {
-            var userToRegitser = new AppUser { Name = userName, PasswordHash = passwoedHash, PasswordSalt = passwoedSalt };
+            Address address = new Address
+            {
+                Country = registerUserDto.Address.Country,
+                City = registerUserDto.Address.City,
+            };
+            var userToRegitser = new AppUser { Name = registerUserDto.Name,
+                Gender = registerUserDto.Gender,
+                KnownAs = registerUserDto.KnowAs,
+                DateOfBirth = registerUserDto.DateOfBirth,
+                Address = address,
+                PasswordHash = passwoedHash,
+                PasswordSalt = passwoedSalt 
+            };
 
-            if (await IsUserExist(userName))
+            if (await IsUserExist(registerUserDto.Name))
                 throw new Exception("this user Is exist");
 
             var user =  await _userRepository.AddAsync(userToRegitser);
             await _unitOfWork.SaveChangesAsync();
+
             return new UserLoginDto
             { 
               Id = user.Id,
               Name = user.Name, 
-              Token = _tokenService.CreateTokent(user.Name)
+              Token = _tokenService.CreateTokent(user.Name),
+              PhotoUrl = user.Photos?.FirstOrDefault(p=>p.IsMain)?.Url,
+              KnownAs=user.KnownAs,
             };
         }
 

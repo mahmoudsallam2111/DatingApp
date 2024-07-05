@@ -5,6 +5,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { LightboxModule } from 'ngx-lightbox';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     }),
     LightboxModule,
     NgxSpinnerModule.forRoot({ type: 'line-spin-fade' }),
+    BsDatepickerModule.forRoot(),
     FileUploadModule,
   ],
   exports: [
@@ -26,6 +28,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     TabsModule,
     LightboxModule,
     NgxSpinnerModule,
+    BsDatepickerModule,
     FileUploadModule,
   ],
 })

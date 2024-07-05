@@ -13,6 +13,7 @@ namespace DatingApp.Application.AutoMapper
 
             CreateMap<UserPhoto, UserPhotoDto>().ReverseMap();
             CreateMap<UserUpdateDto , AppUser>().ReverseMap();
+            CreateMap<RegisterUserDto , AppUser>().ReverseMap();
         }
     }
 }
