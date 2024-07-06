@@ -1,11 +1,7 @@
-﻿using DatingApp.Application.Interfaces.Repositories;
+﻿using DatingApp.Application.Helpers;
+using DatingApp.Application.Interfaces.Repositories;
 using DatingApp.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatingApp.Infrastructure.Persistence.Repositories
 {
@@ -21,12 +17,13 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
-        public virtual async Task<IReadOnlyList<T>> GetAllAsync()
+        public virtual async Task<PagesList<T>> GetAllAsync(UserParams userParams)
         {
-            return await _dbContext
+            var query =  _dbContext
                  .Set<T>()
-                 .AsNoTracking()
-                 .ToListAsync();
+                 .AsNoTracking();
+
+           return await PagesList<T>.CreateAsync(query, userParams.PageNumber , userParams.PageSize);
         }
         public async Task<T> AddAsync(T entity)
         {
@@ -43,6 +40,11 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
             _dbContext.Set<T>().Remove(entity);
         }
 
-
+        public async Task<IReadOnlyList<T>> GetAllWithoutPaginationAsync()
+        {
+            return await _dbContext.Set<T>()
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

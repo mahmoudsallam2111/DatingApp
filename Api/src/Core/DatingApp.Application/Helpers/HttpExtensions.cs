@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
-namespace DatingApp.Infrastructure.Persistence.Helpers
+namespace DatingApp.Application.Helpers
 {
     public static class HttpExtensions
     {
@@ -12,5 +12,6 @@ namespace DatingApp.Infrastructure.Persistence.Helpers
             response.Headers.Add("Access-Control-Expose-Headers", "Pagination");  // as it a custom header
 
         }
+
     }
 }

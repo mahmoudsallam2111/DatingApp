@@ -1,18 +1,18 @@
-﻿namespace DatingApp.Infrastructure.Persistence.Helpers
+﻿namespace DatingApp.Application.Helpers
 {
     public class PaginationHeader
     {
-        public PaginationHeader(int currentPage, int itemPerPage, int totalItems, int tOTALPageS)
+        public PaginationHeader(int currentPage, int itemPerPage, int totalItems, int totalPages)
         {
             CurrentPage = currentPage;
             ItemPerPage = itemPerPage;
             TotalItems = totalItems;
-            this.tOTALPageS = tOTALPageS;
+            TotalPages = totalPages;
         }
 
         public int CurrentPage { get; set; }
         public int ItemPerPage { get; set; }
         public int TotalItems { get; set; }
-        public int tOTALPageS { get; set; }
+        public int TotalPages { get; set; }
     }
 }

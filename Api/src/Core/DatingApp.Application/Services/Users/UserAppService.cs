@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Exceptions;
 using DatingApp.Application.Dtos;
+using DatingApp.Application.Helpers;
 using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
 using DatingApp.Application.Interfaces.Users;
@@ -42,10 +43,15 @@ namespace DatingApp.Application.Features.Users
             return _mapper.Map<GetUserDto>(user);
         }
 
-        public async Task<IReadOnlyList<GetUserDto>> GetUsers()
+        public async Task<PagesList<GetUserDto>> GetUsers(UserParams userParams)
         {
-            var users = await _userRepository.GetAllAsync();
-            return _mapper.Map<IReadOnlyList<AppUser>, IReadOnlyList<GetUserDto>>(users);
+            var currentUser = await _userRepository.FindByUserName(userParams.CurrentUser);
+            if (currentUser is not null)
+            {
+                userParams.Gender = currentUser.Gender == "male" ? "female" : "male";
+            }
+            var users = await _userRepository.GetAllAsync(userParams);
+            return _mapper.Map<PagesList<GetUserDto>>(users);
         }
 
         public async Task<GetUserDto?> LoginUser(LoginDto loginDto)
@@ -101,7 +107,7 @@ namespace DatingApp.Application.Features.Users
 
         private async Task<bool> IsUserExist(string userName)
         {
-            var users =await _userRepository.GetAllAsync();
+            var users =await _userRepository.GetAllWithoutPaginationAsync();
             return users.Any(u=>u.Name.ToLower() == userName.ToLower());
         }
     }

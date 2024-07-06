@@ -1,4 +1,5 @@
 ﻿using DatingApp.Application.Dtos;
+using DatingApp.Application.Helpers;
 using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Users;
 using DatingApp.WebApi.Infrastracture.Extensions;
@@ -35,9 +36,15 @@ namespace DatingApp.WebApi.Controllers.User
         }
 
         [HttpGet("getAllUers")]
-        public async Task<ActionResult<IReadOnlyList<GetUserDto>>> GetUsers()
+        public async Task<ActionResult<PagesList<GetUserDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            var users =  await _userAppService.GetUsers();
+            var currentUserName = User.GetUserName();
+
+            if (currentUserName != null)
+                userParams.CurrentUser = currentUserName;
+
+            var users =  await _userAppService.GetUsers(userParams);
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage,users.PageSize,users.TotalCount,users.TotalPages));
             return Ok(users);
         }
 

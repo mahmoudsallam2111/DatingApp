@@ -1,7 +1,25 @@
 <div class="row">
-  @for (member of members$|async; track member.id) {
+  @for (member of members; track member.id) {
   <div class="col-2">
     <app-member-card [member]="member"></app-member-card>
   </div>
   }
 </div>
+
+@if (pagination) {
+<div class="d-flex justify-content-center">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.itemPerPage"
+    [maxSize]="10"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pageChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>
+}
