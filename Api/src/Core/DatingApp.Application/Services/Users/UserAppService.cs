@@ -73,7 +73,7 @@ namespace DatingApp.Application.Features.Users
                 DateOfBirth = registerUserDto.DateOfBirth,
                 Address = address,
                 PasswordHash = passwoedHash,
-                PasswordSalt = passwoedSalt 
+                PasswordSalt = passwoedSalt,
             };
 
             if (await IsUserExist(registerUserDto.Name))

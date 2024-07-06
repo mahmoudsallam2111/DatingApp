@@ -26,8 +26,9 @@ namespace DatingApp.Infrastructure.Persistence.Context.EntityConfiguration
                 u.Property(a => a.City).IsRequired();
             });
 
-                
-                
+            builder.Property(u => u.Age)
+             .HasComputedColumnSql("DATEDIFF(year, DateOfBirth, GETDATE())");
+
         }
     }
 }

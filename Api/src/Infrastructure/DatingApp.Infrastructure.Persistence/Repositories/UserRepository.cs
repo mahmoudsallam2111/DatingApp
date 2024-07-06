@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,9 +30,15 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
 
         public override async Task<PagesList<AppUser>> GetAllAsync(UserParams userParams)
         {
+            Expression<Func<AppUser , bool>> predicate = 
+                appuser => appuser.Name != userParams.CurrentUser &&
+                appuser.Gender == userParams.Gender &&
+                appuser.Age > userParams.MinAge &&
+                appuser.Age < userParams.MaxAge;
+
             var query = _dbContext.Users
                    .Include(u => u.Photos)
-                   .Where(u=>u.Name != userParams.CurrentUser && u.Gender != userParams.CurrentUser)
+                   .Where(predicate)
                    .AsNoTracking();
 
           return await PagesList<AppUser>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
