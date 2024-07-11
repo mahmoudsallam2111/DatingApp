@@ -90,12 +90,15 @@ namespace DatingApp.Application.Features.Users
         public async Task UpdateUser(UserUpdateDto userUpdateDto)
         {
             var userToUpdate = await _userRepository.GetByIdAsync(userUpdateDto.Id);
+
             if (userToUpdate == null) throw new NotFoundException("user is not found");
-             userToUpdate.Introduction = userUpdateDto.Introduction;
+
+            userToUpdate.Introduction = userUpdateDto.Introduction;
             userToUpdate.LookingFor = userUpdateDto.LookingFor;
             userToUpdate.Interests = userUpdateDto.Interests;
             userToUpdate.Address.City = userUpdateDto.City;
             userToUpdate.Address.Country = userUpdateDto.Country;
+
             _userRepository.Update(userToUpdate);
             await _unitOfWork.SaveChangesAsync(); 
         }
