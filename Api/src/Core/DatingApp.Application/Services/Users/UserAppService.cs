@@ -91,7 +91,7 @@ namespace DatingApp.Application.Features.Users
         {
             var userToUpdate = await _userRepository.GetByIdAsync(userUpdateDto.Id);
             if (userToUpdate == null) throw new NotFoundException("user is not found");
-             userUpdateDto.Introduction = userUpdateDto.Introduction;
+             userToUpdate.Introduction = userUpdateDto.Introduction;
             userToUpdate.LookingFor = userUpdateDto.LookingFor;
             userToUpdate.Interests = userUpdateDto.Interests;
             userToUpdate.Address.City = userUpdateDto.City;

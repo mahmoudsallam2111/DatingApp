@@ -30,7 +30,7 @@
         </div>
         <div>
           <strong>Last Active:</strong>
-          <p>{{ member.lastActive | date : "shortTime" }}</p>
+          <p>{{ member.lastActive + "Z" | timeago }}</p>
         </div>
       </div>
       <div class="card-footer">
@@ -53,7 +53,7 @@
           <textarea
             class="form-control"
             name="introduction"
-            [(ngModel)]="member.introduction"
+            [ngModel]="member.introduction"
             rows="6"
           ></textarea>
           <h4 class="mt-2">looking For</h4>

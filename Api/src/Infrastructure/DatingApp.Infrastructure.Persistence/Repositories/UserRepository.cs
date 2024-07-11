@@ -34,8 +34,8 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
             Expression<Func<AppUser , bool>> predicate = 
                 appuser => appuser.Name != userParams.CurrentUser &&
                 appuser.Gender == userParams.Gender &&
-                appuser.Age > userParams.MinAge &&
-                appuser.Age < userParams.MaxAge;
+                appuser.Age >= userParams.MinAge &&
+                appuser.Age <= userParams.MaxAge;
 
             Expression<Func<AppUser, object>> expression = userParams.OrderBy switch
             {

@@ -13,11 +13,15 @@ import { UserParams } from '../_models/userParams';
 export class MembersService {
   baseUrl: string = environment.apiUrl;
   members: User[] = []; // for storing member in order not to call service every time
-
+  memberCache = new Map(); // to have the advantage of setter and getter
   constructor(private _http: HttpClient) {}
 
   getMembers(userParams: UserParams) {
     debugger;
+    var response = this.memberCache.get(Object.values(userParams).join('-')); // if this key has a response , will will not hit the server
+
+    if (response) return of(response); // of is from rxjs couse this method shoud return an observer
+
     let params = this.getPaginationHeaders(
       userParams.page,
       userParams.itemPerPage
@@ -30,6 +34,11 @@ export class MembersService {
     return this.getPaginatedResult<User[]>(
       this.baseUrl + 'User/getAllUers',
       params
+    ).pipe(
+      map((response) => {
+        this.memberCache.set(Object.values(userParams).join('-'), response); // this is like a key value pairs
+        return response;
+      })
     );
   }
 
