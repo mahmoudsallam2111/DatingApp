@@ -8,6 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FileUploadModule } from 'ng2-file-upload';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @NgModule({
   declarations: [],
@@ -22,6 +23,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     NgxSpinnerModule.forRoot({ type: 'line-spin-fade' }),
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
     FileUploadModule,
   ],
   exports: [
@@ -32,6 +34,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     NgxSpinnerModule,
     BsDatepickerModule,
     PaginationModule,
+    ButtonsModule,
     FileUploadModule,
   ],
 })

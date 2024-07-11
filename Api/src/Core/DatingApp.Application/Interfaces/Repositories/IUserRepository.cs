@@ -11,5 +11,6 @@ namespace DatingApp.Application.Interfaces.Repositories
     public interface IUserRepository : IGenericRepository<AppUser>
     {
         Task<AppUser?> FindByUserName(string name);
+        Task<AppUser?> GetUserByIdWithoutInclude(int id);
     }
 }

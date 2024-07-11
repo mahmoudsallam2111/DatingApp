@@ -5,6 +5,7 @@ using DatingApp.Infrastructure.Persistence.Context;
 using DatingApp.Infrastructure.Persistence.Context.SeedingData;
 using DatingApp.WebApi.Handlers;
 using DatingApp.WebApi.Infrastracture.Extensions;
+using DatingApp.WebApi.Infrastracture.Filters;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
@@ -25,6 +26,8 @@ builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
+builder.Services.AddScoped<LogUserActivity>();
 #endregion
 
 

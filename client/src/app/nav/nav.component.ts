@@ -5,6 +5,8 @@ import { User } from '../_models/user';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthUser } from '../_models/authUser';
+import { MembersService } from '../_services/members.service';
+import { UserParams } from '../_models/userParams';
 
 @Component({
   selector: 'app-nav',
@@ -18,12 +20,13 @@ export class NavComponent implements OnInit {
   };
   username: string;
   password: string;
-
+  userParams: UserParams;
   currentUser$: Observable<AuthUser | null> = of(null);
   constructor(
     private _accountService: AccountService,
     private _router: Router,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
+    private _membersService: MembersService
   ) {}
   ngOnInit(): void {
     this.currentUser$ = this._accountService.currentUser$;
@@ -31,7 +34,7 @@ export class NavComponent implements OnInit {
 
   login() {
     this._accountService.login(this.model).subscribe({
-      next: (_) => this._router.navigateByUrl('/members'),
+      next: (_) => this.loadMembers(),
       error: (error) => {},
     });
   }
@@ -39,5 +42,10 @@ export class NavComponent implements OnInit {
   logout() {
     this._accountService.logout(); // remove user from local storage
     this._router.navigateByUrl('/');
+  }
+
+  loadMembers() {
+    this._router.navigateByUrl('/members');
+    this._membersService.getMembers(this.userParams).subscribe((_) => {});
   }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,9 +37,17 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
                 appuser.Age > userParams.MinAge &&
                 appuser.Age < userParams.MaxAge;
 
+            Expression<Func<AppUser, object>> expression = userParams.OrderBy switch
+            {
+                "LastActive" => appuser => appuser.LastActive,
+                "Created" => appuser => appuser.Created,
+                _ => appuser => appuser.LastActive
+            };
+
             var query = _dbContext.Users
                    .Include(u => u.Photos)
                    .Where(predicate)
+                   .OrderByDescending(expression)
                    .AsNoTracking();
 
           return await PagesList<AppUser>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
@@ -50,6 +59,15 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
             return await _dbContext.Users
                 .Include(u => u.Photos)
                 .SingleAsync(u => u.Id == id);
+        }
+
+        public async Task<AppUser?> GetUserByIdWithoutInclude(int id)
+        {
+           var query = from user in _dbContext.Users
+                       where user.Id == id
+                       select user;
+
+            return await query.SingleOrDefaultAsync();
         }
     }
 }

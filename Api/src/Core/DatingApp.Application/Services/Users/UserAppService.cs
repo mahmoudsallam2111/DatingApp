@@ -45,11 +45,6 @@ namespace DatingApp.Application.Features.Users
 
         public async Task<PagesList<GetUserDto>> GetUsers(UserParams userParams)
         {
-            var currentUser = await _userRepository.FindByUserName(userParams.CurrentUser);
-            if (currentUser is not null)
-            {
-                userParams.Gender = currentUser.Gender == "male" ? "female" : "male";
-            }
             var users = await _userRepository.GetAllAsync(userParams);
             return _mapper.Map<PagesList<GetUserDto>>(users);
         }
@@ -86,7 +81,7 @@ namespace DatingApp.Application.Features.Users
             { 
               Id = user.Id,
               Name = user.Name, 
-              Token = _tokenService.CreateTokent(user.Name),
+              Token = _tokenService.CreateTokent(user.Id,user.Name),
               PhotoUrl = user.Photos?.FirstOrDefault(p=>p.IsMain)?.Url,
               KnownAs=user.KnownAs,
             };

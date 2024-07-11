@@ -1,3 +1,89 @@
+<div class="text-center mt-2">
+  <h2>
+    <span class="bg-danger text-white p-2 rounded d-inline-block">{{
+      pagination?.totalItems
+    }}</span>
+    Matches
+  </h2>
+</div>
+
+<div class="container mt-3" *ngIf="userParams">
+  <form
+    #form="ngForm"
+    class="d-flex mb-3"
+    (ngSubmit)="loadMembers()"
+    autocomplete="off"
+  >
+    <div class="d-flex mx-2">
+      <label class="col-form-label">Age From:</label>
+      <input
+        type="number"
+        class="form-control ms-1"
+        style="width: 70px"
+        name="minAge"
+        [(ngModel)]="userParams.minAge"
+      />
+    </div>
+    <div class="d-flex mx-2">
+      <label class="col-form-label">Age To:</label>
+      <input
+        type="number"
+        class="form-control ms-1"
+        style="width: 70px"
+        name="maxAge"
+        [(ngModel)]="userParams.maxAge"
+      />
+    </div>
+    <div class="d-flex px-2">
+      <label class="col-form-label me-2"> Show: </label>
+      <select
+        name="gender"
+        style="width: 130px"
+        class="form-select ms-1"
+        [(ngModel)]="userParams.gender"
+      >
+        <option *ngFor="let gender of genderList" [value]="gender.value">
+          {{ gender.dispay }}
+        </option>
+      </select>
+    </div>
+    <button class="btn btn-success ms-1" type="submit">Apply Filter</button>
+    <button
+      (click)="resetFilter()"
+      class="btn btn-outline-secondary ms-1"
+      type="submit"
+    >
+      Reset Filter
+    </button>
+
+    <div class="col">
+      <div class="btn-group float-end">
+        <!-- last Active -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          name="orderBy"
+          btnRadio="LastActive"
+          [(ngModel)]="userParams.ordeBy"
+          (click)="loadMembers()"
+        >
+          last Active
+        </button>
+        <!-- newest member -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          name="orderBy"
+          btnRadio="Created"
+          [(ngModel)]="userParams.ordeBy"
+          (click)="loadMembers()"
+        >
+          Newest Member
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
 <div class="row">
   @for (member of members; track member.id) {
   <div class="col-2">

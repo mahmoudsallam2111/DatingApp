@@ -10,6 +10,7 @@ using System.Security.Claims;
 
 namespace DatingApp.WebApi.Controllers.User
 {
+    [Authorize]
     public class UserController : BaseApiController
     {
         private readonly IUserAppService _userAppService;
@@ -28,7 +29,6 @@ namespace DatingApp.WebApi.Controllers.User
             return  await _userAppService.GetUserById(id);
         }
 
-        [Authorize]
         [HttpGet("GetByUserName/{userName}")]
         public async Task<ActionResult<GetUserDto>> GetUserByName(string userName)
         {
@@ -38,11 +38,6 @@ namespace DatingApp.WebApi.Controllers.User
         [HttpGet("getAllUers")]
         public async Task<ActionResult<PagesList<GetUserDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            var currentUserName = User.GetUserName();
-
-            if (currentUserName != null)
-                userParams.CurrentUser = currentUserName;
-
             var users =  await _userAppService.GetUsers(userParams);
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage,users.PageSize,users.TotalCount,users.TotalPages));
             return Ok(users);
