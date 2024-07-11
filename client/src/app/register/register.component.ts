@@ -78,7 +78,6 @@ export class RegisterComponent implements OnInit {
     };
   }
   register() {
-    debugger;
     const dob = this.getDateOnly(
       this.registerForm.controls['dateOfBirth'].value
     );

@@ -3,9 +3,11 @@ import { environment } from '../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User } from '../_models/user';
 import { UserUpdateDto } from '../_models/userUpdateDto';
-import { map, of } from 'rxjs';
+import { map, of, take } from 'rxjs';
 import { PaginatedResult } from '../_models/pagination';
 import { UserParams } from '../_models/userParams';
+import { AccountService } from './account.service';
+import { AuthUser } from '../_models/authUser';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +16,30 @@ export class MembersService {
   baseUrl: string = environment.apiUrl;
   members: User[] = []; // for storing member in order not to call service every time
   memberCache = new Map(); // to have the advantage of setter and getter
-  constructor(private _http: HttpClient) {}
 
+  user: AuthUser;
+  userParams: UserParams;
+  constructor(private _http: HttpClient) {
+    // this._accountService.currentUser$.pipe(take(1)).subscribe((user) => {
+    //   if (user) {
+    //     this.user = user;
+    //     this.userParams = new UserParams(user);
+    //   }
+    // });
+  }
+
+  // getUserParams() {
+  //   return this.userParams;
+  // }
+  // setUserParams(userParams: UserParams) {
+  //   this.userParams = userParams;
+  // }
+
+  // resetUserParams() {
+  //   this.userParams = new UserParams(this.user);
+  //   return this.userParams;
+  // }
   getMembers(userParams: UserParams) {
-    debugger;
     var response = this.memberCache.get(Object.values(userParams).join('-')); // if this key has a response , will will not hit the server
 
     if (response) return of(response); // of is from rxjs couse this method shoud return an observer
@@ -40,6 +62,31 @@ export class MembersService {
         return response;
       })
     );
+  }
+
+  getMember(userName: string) {
+    debugger;
+    const member = [...this.memberCache.values()]
+      .reduce((acc, item) => acc.concat(item.result), [])
+      .find((user: User) => user.name === userName);
+
+    if (member) return of(member);
+
+    return this._http.get<User>(
+      this.baseUrl + 'User/GetByUserName/' + userName
+    );
+  }
+
+  updateMember(userUpdateDto: UserUpdateDto) {
+    return this._http.put(this.baseUrl + 'User', userUpdateDto);
+  }
+
+  setMainPhoto(photoId: number) {
+    return this._http.put(this.baseUrl + `User/set-main-photo/${photoId}`, {});
+  }
+
+  deletePhoto(photoId: number) {
+    return this._http.delete(this.baseUrl + `User/delete-photo/${photoId}`);
   }
 
   private getPaginatedResult<T>(url: string, params: HttpParams) {
@@ -71,24 +118,5 @@ export class MembersService {
       params = params.append('pageSize', itemPerPage);
     }
     return params;
-  }
-
-  getMember(userName: string) {
-    const member = this.members.find((m) => m.name === userName);
-    if (member) return of(member);
-    return this._http.get<User>(
-      this.baseUrl + 'User/GetByUserName/' + userName
-    );
-  }
-  updateMember(userUpdateDto: UserUpdateDto) {
-    return this._http.put(this.baseUrl + 'User', userUpdateDto);
-  }
-
-  setMainPhoto(photoId: number) {
-    return this._http.put(this.baseUrl + `User/set-main-photo/${photoId}`, {});
-  }
-
-  deletePhoto(photoId: number) {
-    return this._http.delete(this.baseUrl + `User/delete-photo/${photoId}`);
   }
 }

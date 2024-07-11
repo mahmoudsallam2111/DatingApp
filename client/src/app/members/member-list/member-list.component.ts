@@ -13,7 +13,6 @@ import { AccountService } from '../../_services/account.service';
   styleUrl: './member-list.component.css',
 })
 export class MemberListComponent implements OnInit {
-  // members$: Observable<User[]>;
   members: User[];
   pagination: Pagination | undefined;
   userParams: UserParams;
@@ -38,17 +37,18 @@ export class MemberListComponent implements OnInit {
   }
   resetFilter() {
     if (this.user) {
-      this.userParams = new UserParams(this.user);
       this.loadMembers();
     }
   }
   loadMembers() {
-    this._memeberservice.getMembers(this.userParams).subscribe((response) => {
-      if (response.result && response.pagination) {
-        this.members = response.result;
-        this.pagination = response.pagination;
-      }
-    });
+    if (this.userParams) {
+      this._memeberservice.getMembers(this.userParams).subscribe((response) => {
+        if (response.result && response.pagination) {
+          this.members = response.result;
+          this.pagination = response.pagination;
+        }
+      });
+    }
   }
 
   pageChanged(event: any) {

@@ -50,7 +50,6 @@ export class MemberEditComponent implements OnInit {
   }
 
   updateMember() {
-    debugger;
     const id = Number(this._router.snapshot.paramMap.get('id'));
     const userUpdateDto = { ...this.editForm.value, id } as UserUpdateDto;
     console.log(this.userUpdateDto);

@@ -8,7 +8,6 @@ export class UserParams {
   maxAge?: number = 99;
   ordeBy?: string = 'LastActive';
   constructor(user: AuthUser) {
-    debugger;
     this.gender = user.gender === 'male' ? 'female' : 'male';
   }
 }
