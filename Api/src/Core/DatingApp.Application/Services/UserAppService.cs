@@ -4,11 +4,10 @@ using DatingApp.Application.Dtos;
 using DatingApp.Application.Helpers;
 using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
-using DatingApp.Application.Interfaces.Users;
 using DatingApp.Domain.Aggregates.AppUser.Entities;
 using DatingApp.Domain.Aggregates.AppUser.ValueObjects;
 
-namespace DatingApp.Application.Features.Users
+namespace DatingApp.Application.Services
 {
     public class UserAppService : IUserAppService
     {
@@ -37,7 +36,7 @@ namespace DatingApp.Application.Features.Users
 
         public async Task<GetUserDto> GetUserByName(string name)
         {
-           var user = await _userRepository.FindByUserName(name);
+            var user = await _userRepository.FindByUserName(name);
             if (user is null)
                 throw new NotFoundException("user is not found");
             return _mapper.Map<GetUserDto>(user);
@@ -51,7 +50,7 @@ namespace DatingApp.Application.Features.Users
 
         public async Task<GetUserDto?> LoginUser(LoginDto loginDto)
         {
-            var user =await _userRepository.FindByUserName(loginDto.Name);
+            var user = await _userRepository.FindByUserName(loginDto.Name);
             return _mapper.Map<GetUserDto?>(user);
         }
 
@@ -62,7 +61,9 @@ namespace DatingApp.Application.Features.Users
                 Country = registerUserDto.Address.Country,
                 City = registerUserDto.Address.City,
             };
-            var userToRegitser = new AppUser { Name = registerUserDto.Name,
+            var userToRegitser = new AppUser
+            {
+                Name = registerUserDto.Name,
                 Gender = registerUserDto.Gender,
                 KnownAs = registerUserDto.KnowAs,
                 DateOfBirth = registerUserDto.DateOfBirth,
@@ -74,16 +75,16 @@ namespace DatingApp.Application.Features.Users
             if (await IsUserExist(registerUserDto.Name))
                 throw new Exception("this user Is exist");
 
-            var user =  await _userRepository.AddAsync(userToRegitser);
+            var user = await _userRepository.AddAsync(userToRegitser);
             await _unitOfWork.SaveChangesAsync();
 
             return new UserLoginDto
-            { 
-              Id = user.Id,
-              Name = user.Name, 
-              Token = _tokenService.CreateTokent(user.Id,user.Name),
-              PhotoUrl = user.Photos?.FirstOrDefault(p=>p.IsMain)?.Url,
-              KnownAs=user.KnownAs,
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Token = _tokenService.CreateTokent(user.Id, user.Name),
+                PhotoUrl = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
+                KnownAs = user.KnownAs,
             };
         }
 
@@ -100,13 +101,13 @@ namespace DatingApp.Application.Features.Users
             userToUpdate.Address.Country = userUpdateDto.Country;
 
             _userRepository.Update(userToUpdate);
-            await _unitOfWork.SaveChangesAsync(); 
+            await _unitOfWork.SaveChangesAsync();
         }
 
         private async Task<bool> IsUserExist(string userName)
         {
-            var users =await _userRepository.GetAllWithoutPaginationAsync();
-            return users.Any(u=>u.Name.ToLower() == userName.ToLower());
+            var users = await _userRepository.GetAllWithoutPaginationAsync();
+            return users.Any(u => u.Name.ToLower() == userName.ToLower());
         }
     }
 }

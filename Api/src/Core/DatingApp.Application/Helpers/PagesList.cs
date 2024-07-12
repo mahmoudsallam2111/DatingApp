@@ -1,4 +1,6 @@
-﻿namespace DatingApp.Application.Helpers
+﻿using DatingApp.Domain.Aggregates.AppUser.Entities;
+
+namespace DatingApp.Application.Helpers
 {
     public class PagesList<T> : List<T>
     {

@@ -16,6 +16,8 @@ namespace DatingApp.Application.AutoMapper
             CreateMap<UserUpdateDto , AppUser>().ReverseMap();
             CreateMap<RegisterUserDto , AppUser>().ReverseMap();
 
+            CreateMap<AppUser , LikeDto>().ReverseMap();
+
 
             // for custom mapper
             CreateMap(typeof(PagesList<>), typeof(PagesList<>)).ConvertUsing(typeof(PagesListConverter<,>));

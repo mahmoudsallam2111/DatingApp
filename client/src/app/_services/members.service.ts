@@ -65,7 +65,6 @@ export class MembersService {
   }
 
   getMember(userName: string) {
-    debugger;
     const member = [...this.memberCache.values()]
       .reduce((acc, item) => acc.concat(item.result), [])
       .find((user: User) => user.name === userName);
@@ -111,6 +110,15 @@ export class MembersService {
       );
   }
 
+  addLike(userName: string) {
+    return this._http.post(this.baseUrl + 'Likes/' + userName, {});
+  }
+
+  getLikes(predicate: string) {
+    return this._http.get<User[]>(
+      this.baseUrl + 'Likes?predicate=' + predicate
+    );
+  }
   private getPaginationHeaders(page: number, itemPerPage: number) {
     let params = new HttpParams();
     if (page && itemPerPage) {

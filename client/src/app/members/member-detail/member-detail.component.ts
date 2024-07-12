@@ -3,6 +3,7 @@ import { User } from '../../_models/user';
 import { MembersService } from '../../_services/members.service';
 import { ActivatedRoute } from '@angular/router';
 import { Lightbox } from 'ngx-lightbox';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-detail',
@@ -17,7 +18,8 @@ export class MemberDetailComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _memberService: MembersService,
-    private _lightbox: Lightbox
+    private _lightbox: Lightbox,
+    private _toastre: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -54,5 +56,11 @@ export class MemberDetailComponent implements OnInit {
 
   close(): void {
     this._lightbox.close();
+  }
+
+  addLike(member: User) {
+    this._memberService.addLike(member.name).subscribe((_) => {
+      this._toastre.success('you have liked ' + member.knownAs);
+    });
   }
 }

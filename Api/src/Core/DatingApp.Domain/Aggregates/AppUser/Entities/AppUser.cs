@@ -19,6 +19,9 @@ namespace DatingApp.Domain.Aggregates.AppUser.Entities
         public string Interests { get; set; } = string.Empty;
         public Address Address { get; set; } = new();
         public List<UserPhoto> Photos { get; set; } = new();
+
+        public List<UserLike> LikedByUsers { get; set; } = new();  // users that like that a specific user
+        public List<UserLike> LikedUsers { get; set; } = new();   // users that like that a specific user
         public int GetAge()
         {
             return DateOfBirth.CalculateAge();

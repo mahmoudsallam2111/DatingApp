@@ -12,7 +12,7 @@
         </button>
       </li>
       <li class="list-inline-item">
-        <button class="bn btn-primary">
+        <button (click)="addLike(member)" class="bn btn-primary">
           <i style="color: orangered" class="fa fa-heart fa-2x"></i>
         </button>
       </li>
@@ -27,6 +27,8 @@
     <h6 class="card-title text-center mb-1">
       <i class="fa fa-user me-2">{{ member.knownAs }},{{ member.age }}</i>
     </h6>
-    <p class="card-text text-muted text-center">{{ member.address.city }}</p>
+    <p *ngIf="member.address" class="card-text text-muted text-center">
+      {{ member.address.city }}
+    </p>
   </div>
 </div>

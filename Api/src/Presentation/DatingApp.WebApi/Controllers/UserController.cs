@@ -1,14 +1,13 @@
 ﻿using DatingApp.Application.Dtos;
 using DatingApp.Application.Helpers;
 using DatingApp.Application.Interfaces;
-using DatingApp.Application.Interfaces.Users;
 using DatingApp.WebApi.Infrastracture.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace DatingApp.WebApi.Controllers.User
+namespace DatingApp.WebApi.Controllers
 {
     [Authorize]
     public class UserController : BaseApiController
@@ -16,7 +15,7 @@ namespace DatingApp.WebApi.Controllers.User
         private readonly IUserAppService _userAppService;
         private readonly IPhotoAppService _photoAppService;
 
-        public UserController(IUserAppService user , IPhotoAppService photoAppService)
+        public UserController(IUserAppService user, IPhotoAppService photoAppService)
         {
             _userAppService = user;
             _photoAppService = photoAppService;
@@ -26,7 +25,7 @@ namespace DatingApp.WebApi.Controllers.User
         //[Authorize]
         public async Task<ActionResult<GetUserDto>> GetUser(int id)
         {
-            return  await _userAppService.GetUserById(id);
+            return await _userAppService.GetUserById(id);
         }
 
         [HttpGet("GetByUserName/{userName}")]
@@ -41,8 +40,8 @@ namespace DatingApp.WebApi.Controllers.User
             var userName = User.GetUserName();
             userParams.CurrentUser = userName;
 
-            var users =  await _userAppService.GetUsers(userParams);
-            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage,users.PageSize,users.TotalCount,users.TotalPages));
+            var users = await _userAppService.GetUsers(userParams);
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
             return Ok(users);
         }
 
@@ -59,17 +58,17 @@ namespace DatingApp.WebApi.Controllers.User
         {
             var userName = User.GetUserName(); // to get the name if the user is authorized
 
-            var result =  await _photoAppService.AddPhoto(file , userName);
+            var result = await _photoAppService.AddPhoto(file, userName);
 
-            if(result.Error != null)  return BadRequest(result.Error);
+            if (result.Error != null) return BadRequest(result.Error);
 
             var userPhotoDto = new UserPhotoDto
             {
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId,
             };
-          
-           return CreatedAtAction(nameof(GetUserByName), new {userName = userName},userPhotoDto);
+
+            return CreatedAtAction(nameof(GetUserByName), new { userName }, userPhotoDto);
 
         }
 
