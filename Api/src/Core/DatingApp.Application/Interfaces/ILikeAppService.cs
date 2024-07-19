@@ -5,7 +5,7 @@ namespace DatingApp.Application.Interfaces
 {
     public interface ILikeAppService
     {
-        Task AddLikeAsync(long sourceUserId, string likedUserName);
-        Task<List<LikeDto>> GetUserLikeAsync(string predicate, long userId);
+        Task AddLikeAsync(int sourceUserId, string likedUserName);
+        Task<List<LikeDto>> GetUserLikeAsync(string predicate, int userId);
     }
 }

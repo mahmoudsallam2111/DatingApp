@@ -29,6 +29,13 @@ namespace DatingApp.Infrastructure.Persistence.Context.EntityConfiguration
             builder.Property(u => u.Age)
              .HasComputedColumnSql("DATEDIFF(year, DateOfBirth, GETDATE())");
 
+
+            //builder.HasMany(u=>u.UserRoles)
+            //    .WithOne(ur=>ur.User)
+            //    .HasForeignKey(u=>u.UserId)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

@@ -1,5 +1,6 @@
 using DatingApp.Application;
 using DatingApp.Application.Helpers;
+using DatingApp.Domain.Aggregates.AppUser.Entities;
 using DatingApp.Infrastructure.Persistence;
 using DatingApp.Infrastructure.Persistence.Context;
 using DatingApp.Infrastructure.Persistence.Context.SeedingData;
@@ -42,9 +43,10 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
     //Seed Data
-    await Seed.SeedUser(context);
+    await Seed.SeedUser(userManager);
 }
 
 // Configure the HTTP request pipeline.

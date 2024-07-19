@@ -13,12 +13,12 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<UserLike> GetUserLike(long sourceUserId, long targetUserId)
+        public async Task<UserLike> GetUserLike(int sourceUserId, int targetUserId)
         {
             return await _dbContext.Likes.FindAsync(sourceUserId, targetUserId);
         }
 
-        public async Task<IList<AppUser>> GetUserLikes(string predicate, long userId)
+        public async Task<IList<AppUser>> GetUserLikes(string predicate, int userId)
         {
             var likes = _dbContext.Likes.AsQueryable();
 
@@ -37,13 +37,13 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
                 .Where(u => userIds.Contains(u.Id))
                 .Include(u => u.Photos)
                 .AsSplitQuery()
-                .OrderBy(u => u.Name)
+                .OrderBy(u => u.UserName)
                 .ToListAsync();
 
             return users;
         }
 
-        public async Task<AppUser> GetUserWithLikes(long userId)
+        public async Task<AppUser> GetUserWithLikes(int userId)
         {
             return await _dbContext.Users
                 .AsSplitQuery()

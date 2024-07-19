@@ -35,7 +35,6 @@ export class MemberDetailComponent implements OnInit {
       next: (member) => {
         this.member = member;
         this.galleryImages = this.getImages();
-        console.log(this.member);
       },
     });
   }
@@ -59,7 +58,7 @@ export class MemberDetailComponent implements OnInit {
   }
 
   addLike(member: User) {
-    this._memberService.addLike(member.name).subscribe({
+    this._memberService.addLike(member.userName).subscribe({
       next: (_) => {
         this._toastre.success('you have liked ' + member.knownAs);
       },

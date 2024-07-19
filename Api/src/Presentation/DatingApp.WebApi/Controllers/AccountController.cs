@@ -20,11 +20,7 @@ namespace DatingApp.WebApi.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserLoginDto>> Register(RegisterUserDto registerUserDto)
         {
-            using var hmac = new HMACSHA512();
-            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUserDto.Password));
-            var passwordSalt = hmac.Key;
-
-            var user = await _userAppService.RegisterUser(registerUserDto, passwordHash, passwordSalt);
+            var user = await _userAppService.RegisterUser(registerUserDto);
             return Ok(user);
 
         }
@@ -33,26 +29,10 @@ namespace DatingApp.WebApi.Controllers
         public async Task<ActionResult<UserLoginDto>> Login(LoginDto loginDto)
         {
             var user = await _userAppService.LoginUser(loginDto);
-            if (user is null) return Unauthorized("Invalid User");
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i])
-                {
-                    return Unauthorized("Invalid Password");
-                }
-            }
-            UserLoginDto userLoginDto = new UserLoginDto
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Token = _tokenService.CreateTokent(user.Id, user.Name),
-                PhotoUrl = user?.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
-                Gender = user.Gender
-            };
-            return Ok(userLoginDto);
+            if (user is null) return Unauthorized("Invalid UserName or Password");
+
+            return Ok(user);
         }
 
     }

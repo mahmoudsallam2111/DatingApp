@@ -2,6 +2,6 @@
 {
     public interface ITokenService
     {
-        string CreateTokent(long id ,string username);
+        string CreateTokent(int id ,string username);
     }
 }

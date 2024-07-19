@@ -3,9 +3,7 @@ import { Photo } from './photo';
 
 export interface User {
   id: number;
-  name: string;
-  passwordHash: string;
-  passwordSalt: string;
+  userName: string;
   age: number;
   photoUrl: string;
   knownAs: string;

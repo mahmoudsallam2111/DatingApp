@@ -52,7 +52,6 @@ export class MemberEditComponent implements OnInit {
   updateMember() {
     const id = Number(this._router.snapshot.paramMap.get('id'));
     const userUpdateDto = { ...this.editForm.value, id } as UserUpdateDto;
-    console.log(this.userUpdateDto);
 
     this._memberservice.updateMember(userUpdateDto).subscribe(() => {
       this._toastre.success('profile updated successfully');

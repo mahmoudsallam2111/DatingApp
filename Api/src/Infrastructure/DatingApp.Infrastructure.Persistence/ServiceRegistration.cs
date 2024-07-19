@@ -1,7 +1,9 @@
 ﻿using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
+using DatingApp.Domain.Aggregates.AppUser.Entities;
 using DatingApp.Infrastructure.Persistence.Context;
 using DatingApp.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +17,16 @@ namespace DatingApp.Infrastructure.Persistence
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-                  
+
+            // Configure identity (register it)
+            services.AddIdentityCore<AppUser>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            })
+            .AddRoles<AppRole>()
+            .AddRoleManager<RoleManager<AppRole>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
             // regitser Unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ILikeRepository, LikeRepository>();

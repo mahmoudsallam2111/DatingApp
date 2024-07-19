@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { User } from '../../_models/user';
 import { MembersService } from '../../_services/members.service';
 import { ToastrService } from 'ngx-toastr';
@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './member-card.component.html',
   styleUrl: './member-card.component.css',
 })
-export class MemberCardComponent {
+export class MemberCardComponent implements OnInit {
   @Input({
     required: true,
   })
@@ -17,9 +17,12 @@ export class MemberCardComponent {
     private _memberService: MembersService,
     private _toastre: ToastrService
   ) {}
+  ngOnInit(): void {
+    console.log(this.member);
+  }
 
   addLike(member: User) {
-    this._memberService.addLike(member.name).subscribe({
+    this._memberService.addLike(member.userName).subscribe({
       next: (_) => {
         this._toastre.success('you have liked ' + member.knownAs);
       },

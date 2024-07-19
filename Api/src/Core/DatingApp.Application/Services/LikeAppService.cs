@@ -25,14 +25,14 @@ namespace DatingApp.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddLikeAsync(long sourceUserId, string likedUserName)
+        public async Task AddLikeAsync(int sourceUserId, string likedUserName)
         {
             var likedUser = await _userRepository.FindByUserName(likedUserName);
 
             if (likedUser == null)  throw new NotFoundException("the liked user is not exist"); 
 
             var sourceUser = await _likeRepository.GetUserWithLikes(sourceUserId);
-            if (sourceUser.Name == likedUserName) throw new Exception("You can not like yourself");
+            if (sourceUser.UserName == likedUserName) throw new Exception("You can not like yourself");
 
             var userLike = await _likeRepository.GetUserLike(sourceUserId , likedUser.Id);
 
@@ -50,14 +50,14 @@ namespace DatingApp.Application.Services
 
         }
 
-        public async Task<List<LikeDto>> GetUserLikeAsync(string predicate, long userId)
+        public async Task<List<LikeDto>> GetUserLikeAsync(string predicate, int userId)
         {
             var users = await _likeRepository.GetUserLikes(predicate , userId);
 
             var likeDtos = users.Select(user => new LikeDto
             {
                 Id = user.Id,
-                Name = user.Name,
+                UserName = user.UserName,
                 KnownAs = user.KnownAs,
                 Age = user.Age,
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain)?.Url

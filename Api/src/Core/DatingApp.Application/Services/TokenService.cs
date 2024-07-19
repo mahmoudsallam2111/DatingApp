@@ -15,7 +15,7 @@ namespace DatingApp.Application.Services
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]!));
         }
-        public string CreateTokent(long id, string username)
+        public string CreateTokent(int id, string username)
         {
             var claims = new List<Claim>
             {

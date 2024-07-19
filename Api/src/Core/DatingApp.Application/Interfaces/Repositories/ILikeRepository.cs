@@ -10,8 +10,8 @@ namespace DatingApp.Application.Interfaces.Repositories
 {
     public interface ILikeRepository
     {
-        Task<UserLike> GetUserLike(long sourceUserId ,  long targetUserId);
-        Task<AppUser> GetUserWithLikes(long userId);
-        Task<IList<AppUser>> GetUserLikes(string predicate , long userId);
+        Task<UserLike> GetUserLike(int sourceUserId ,  int targetUserId);
+        Task<AppUser> GetUserWithLikes(int userId);
+        Task<IList<AppUser>> GetUserLikes(string predicate , int userId);
     }
 }

@@ -1,16 +1,19 @@
 ﻿using DatingApp.Domain.Aggregates.AppUser.Entities;
 using DatingApp.Domain.Common;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.Infrastructure.Persistence.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser , AppRole,int ,
+        IdentityUserClaim<int> , IdentityUserRole<int>, IdentityUserLogin<int> , 
+        IdentityRoleClaim<int>,IdentityUserToken<int>>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
-        public DbSet<AppUser> Users { get; set; }
         public DbSet<UserPhoto> Photos { get; set; }
         public DbSet<UserLike> Likes { get; set; }
 

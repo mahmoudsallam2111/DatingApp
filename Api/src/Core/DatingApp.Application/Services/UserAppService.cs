@@ -6,6 +6,7 @@ using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
 using DatingApp.Domain.Aggregates.AppUser.Entities;
 using DatingApp.Domain.Aggregates.AppUser.ValueObjects;
+using Microsoft.AspNetCore.Identity;
 
 namespace DatingApp.Application.Services
 {
@@ -14,16 +15,19 @@ namespace DatingApp.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
         public UserAppService(IUserRepository userRepository,
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
+            UserManager<AppUser> userManager,
             IMapper mapper)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
             _mapper = mapper;
         }
         public async Task<GetUserDto> GetUserById(int id)
@@ -48,14 +52,34 @@ namespace DatingApp.Application.Services
             return _mapper.Map<PagesList<GetUserDto>>(users);
         }
 
-        public async Task<GetUserDto?> LoginUser(LoginDto loginDto)
+        public async Task<UserLoginDto?> LoginUser(LoginDto loginDto)
         {
             var user = await _userRepository.FindByUserName(loginDto.Name);
-            return _mapper.Map<GetUserDto?>(user);
+
+            if (user is null) return null;
+
+            var correctPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (!correctPassword)
+            {
+                return null;
+            }
+
+            return new UserLoginDto
+            {
+                Id = user.Id,
+                Name = user.UserName,
+                Token = _tokenService.CreateTokent(user.Id, user.UserName),
+                PhotoUrl = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
+                KnownAs = user.KnownAs,
+                Gender = user.Gender,
+            };
         }
 
-        public async Task<UserLoginDto> RegisterUser(RegisterUserDto registerUserDto, byte[] passwoedHash, byte[] passwoedSalt)
+        public async Task<UserLoginDto> RegisterUser(RegisterUserDto registerUserDto)
         {
+            if (await IsUserExist(registerUserDto.Name))
+                throw new Exception("this user Is exist");
+
             Address address = new Address
             {
                 Country = registerUserDto.Address.Country,
@@ -63,28 +87,33 @@ namespace DatingApp.Application.Services
             };
             var userToRegitser = new AppUser
             {
-                Name = registerUserDto.Name,
+                UserName = registerUserDto.Name,
                 Gender = registerUserDto.Gender,
                 KnownAs = registerUserDto.KnowAs,
                 DateOfBirth = registerUserDto.DateOfBirth,
                 Address = address,
-                PasswordHash = passwoedHash,
-                PasswordSalt = passwoedSalt,
             };
 
-            if (await IsUserExist(registerUserDto.Name))
-                throw new Exception("this user Is exist");
+            var result = await _userManager.CreateAsync(userToRegitser , registerUserDto.Password);
 
-            var user = await _userRepository.AddAsync(userToRegitser);
-            await _unitOfWork.SaveChangesAsync();
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    throw new Exception(error.Description.ToString());
+                }
+            }
+
+            var user =await _userRepository.FindByUserName(registerUserDto.Name);
 
             return new UserLoginDto
             {
                 Id = user.Id,
-                Name = user.Name,
-                Token = _tokenService.CreateTokent(user.Id, user.Name),
+                Name = user.UserName,
+                Token = _tokenService.CreateTokent(user.Id, user.UserName),
                 PhotoUrl = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
                 KnownAs = user.KnownAs,
+                Gender = user.Gender,
             };
         }
 
@@ -107,7 +136,7 @@ namespace DatingApp.Application.Services
         private async Task<bool> IsUserExist(string userName)
         {
             var users = await _userRepository.GetAllWithoutPaginationAsync();
-            return users.Any(u => u.Name.ToLower() == userName.ToLower());
+            return users.Any(u => u.UserName.ToLower() == userName.ToLower());
         }
     }
 }

@@ -26,13 +26,13 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
         {
             return await _dbContext.Users
                 .Include(u => u.Photos)
-                .SingleOrDefaultAsync(u=>u.Name == name);
+                .SingleOrDefaultAsync(u=>u.UserName == name);
         }
 
         public override async Task<PagesList<AppUser>> GetAllAsync(UserParams userParams)
         {
             Expression<Func<AppUser , bool>> predicate = 
-                appuser => appuser.Name != userParams.CurrentUser &&
+                appuser => appuser.UserName != userParams.CurrentUser &&
                 appuser.Gender == userParams.Gender &&
                 appuser.Age >= userParams.MinAge &&
                 appuser.Age <= userParams.MaxAge;

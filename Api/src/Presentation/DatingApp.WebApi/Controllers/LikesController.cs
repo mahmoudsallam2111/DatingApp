@@ -23,7 +23,7 @@ namespace DatingApp.WebApi.Controllers
         public async Task<ActionResult> AddLike(string likedUserName)
         {
             var sourceUserId = User.GetUserId();
-            await _likeAppService.AddLikeAsync(long.Parse(sourceUserId), likedUserName);
+            await _likeAppService.AddLikeAsync(int.Parse(sourceUserId), likedUserName);
             return Ok();
             
         }
@@ -31,7 +31,7 @@ namespace DatingApp.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<PagesList<LikeDto>>> GetUserLike (string predicate)
         {
-            var result = await _likeAppService.GetUserLikeAsync(predicate , long.Parse(User.GetUserId()));
+            var result = await _likeAppService.GetUserLikeAsync(predicate , int.Parse(User.GetUserId()));
             return Ok(result);
         }
 

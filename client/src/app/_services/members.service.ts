@@ -40,7 +40,11 @@ export class MembersService {
   //   return this.userParams;
   // }
   getMembers(userParams: UserParams) {
-    var response = this.memberCache.get(Object.values(userParams).join('-')); // if this key has a response , will will not hit the server
+    if (!userParams) {
+      return of([]); // Return an empty observable or handle the case accordingly
+    }
+
+    var response = this.memberCache.get(Object.values(userParams)?.join('-')); // if this key has a response, it will not hit the server
 
     if (response) return of(response); // of is from rxjs couse this method shoud return an observer
 
@@ -67,7 +71,7 @@ export class MembersService {
   getMember(userName: string) {
     const member = [...this.memberCache.values()]
       .reduce((acc, item) => acc.concat(item.result), [])
-      .find((user: User) => user.name === userName);
+      .find((user: User) => user.userName === userName);
 
     if (member) return of(member);
 
