@@ -28,7 +28,15 @@
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              }
+            ],
             "styles": [
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -36,6 +44,8 @@
               "./node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/ngx-spinner/animations/line-spin-fade.css",
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+              "node_modules/@taiga-ui/core/styles/taiga-ui-fonts.less",
               "src/styles.css"
             ],
             "scripts": []

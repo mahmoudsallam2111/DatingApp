@@ -1,4 +1,4 @@
-@if (error?.messages) {
+@if (error) {
 <div class="not-found-container">
   <div class="content">
     <span class="error-num">4</span>
@@ -8,8 +8,25 @@
       Oh eyeballs! Something went wrong. We're <i>looking</i> to see what
       happened.
     </p>
+  </div>
 
-    <p class="text-danger">{{ error.messages }}</p>
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">TraceId</th>
+          <th scope="col">detail</th>
+          <th scope="col">instance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{ error.TraceId }}</th>
+          <td>{{ error.detail }}</td>
+          <td>{{ error.instance }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 }@else{

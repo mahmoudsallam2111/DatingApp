@@ -19,8 +19,13 @@ export class MemberCardComponent {
   ) {}
 
   addLike(member: User) {
-    this._memberService.addLike(member.name).subscribe((_) => {
-      this._toastre.success('you have liked ' + member.knownAs);
+    this._memberService.addLike(member.name).subscribe({
+      next: (_) => {
+        this._toastre.success('you have liked ' + member.knownAs);
+      },
+      error: (error) => {
+        this._toastre.error(error.error.detail);
+      },
     });
   }
 }

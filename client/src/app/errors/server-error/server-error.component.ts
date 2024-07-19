@@ -11,10 +11,12 @@ export class ServerErrorComponent implements OnInit {
 
   constructor(private el: ElementRef, private _route: Router) {
     const navigation = this._route.getCurrentNavigation();
-    this.error = navigation?.extras?.state ? ['error'] : null;
+    this.error = navigation?.extras?.state?.['error'];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.error);
+  }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {

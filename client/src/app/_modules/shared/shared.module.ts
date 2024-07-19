@@ -10,6 +10,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
+import { TuiRootModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiInputModule } from '@taiga-ui/kit';
 
 @NgModule({
   declarations: [],
@@ -27,6 +29,9 @@ import { TimeagoModule } from 'ngx-timeago';
     ButtonsModule.forRoot(),
     TimeagoModule.forRoot(),
     FileUploadModule,
+    TuiRootModule,
+    TuiInputModule,
+    TuiSvgModule,
   ],
   exports: [
     BsDropdownModule,
@@ -39,6 +44,9 @@ import { TimeagoModule } from 'ngx-timeago';
     ButtonsModule,
     TimeagoModule,
     FileUploadModule,
+    TuiRootModule,
+    TuiInputModule,
+    TuiSvgModule,
   ],
 })
 export class SharedModule {}
