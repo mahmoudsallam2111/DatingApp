@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240719133228_Initial")]
+    [Migration("20240720115022_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -26,6 +26,21 @@ namespace DatingApp.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AppRoleAppUser", b =>
+                {
+                    b.Property<int>("AppRolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserRolesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppRolesId", "UserRolesId");
+
+                    b.HasIndex("UserRolesId");
+
+                    b.ToTable("AppRoleAppUser");
+                });
+
             modelBuilder.Entity("DatingApp.Domain.Aggregates.AppUser.Entities.AppRole", b =>
                 {
                     b.Property<int>("Id")
@@ -33,9 +48,6 @@ namespace DatingApp.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -50,8 +62,6 @@ namespace DatingApp.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -345,11 +355,19 @@ namespace DatingApp.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DatingApp.Domain.Aggregates.AppUser.Entities.AppRole", b =>
+            modelBuilder.Entity("AppRoleAppUser", b =>
                 {
+                    b.HasOne("DatingApp.Domain.Aggregates.AppUser.Entities.AppRole", null)
+                        .WithMany()
+                        .HasForeignKey("AppRolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DatingApp.Domain.Aggregates.AppUser.Entities.AppUser", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("AppUserId");
+                        .WithMany()
+                        .HasForeignKey("UserRolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DatingApp.Domain.Aggregates.AppUser.Entities.UserLike", b =>
@@ -440,8 +458,6 @@ namespace DatingApp.Infrastructure.Persistence.Migrations
                     b.Navigation("LikedUsers");
 
                     b.Navigation("Photos");
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

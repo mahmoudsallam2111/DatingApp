@@ -44,9 +44,10 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
     //Seed Data
-    await Seed.SeedUser(userManager);
+    await Seed.SeedUser(userManager , roleManager);
 }
 
 // Configure the HTTP request pipeline.

@@ -27,6 +27,12 @@
         >
       </li>
 
+      <li *appHasRole="['Admin', 'Moderator']" class="nav-item">
+        <a class="nav-link" routerLink="/admin" routerLinkActive="active"
+          >Admin</a
+        >
+      </li>
+
       <li class="nav-item">
         <a class="nav-link" routerLink="/serverError" routerLinkActive="active"
           >Erros</a
@@ -58,7 +64,7 @@
         class="text-light dropdown-toggle text-decoration-none align-content-center ms-2"
         aria-controls="dropdown-basic"
       >
-        Welcome {{ loggedInuser.name | titlecase }}
+        Welcome {{ loggedInuser.userName | titlecase }}
         <span class="caret"></span>
       </a>
       <ul

@@ -1,8 +1,9 @@
 export interface AuthUser {
   id: number;
-  name: string;
+  userName: string;
   token: string;
   photoUrl: string;
   knownAs: string;
   gender: string;
+  roles: string[];
 }

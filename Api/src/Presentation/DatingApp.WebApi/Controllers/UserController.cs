@@ -34,6 +34,7 @@ namespace DatingApp.WebApi.Controllers
             return await _userAppService.GetUserByName(userName);
         }
 
+        //[Authorize(Roles ="Admin")]
         [HttpGet("getAllUers")]
         public async Task<ActionResult<PagesList<GetUserDto>>> GetUsers([FromQuery] UserParams userParams)
         {

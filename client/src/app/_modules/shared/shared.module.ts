@@ -12,6 +12,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
 import { TuiRootModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiInputModule } from '@taiga-ui/kit';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [],
@@ -28,6 +29,7 @@ import { TuiInputModule } from '@taiga-ui/kit';
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
     TimeagoModule.forRoot(),
+    ModalModule.forRoot(),
     FileUploadModule,
     TuiRootModule,
     TuiInputModule,
@@ -43,6 +45,7 @@ import { TuiInputModule } from '@taiga-ui/kit';
     PaginationModule,
     ButtonsModule,
     TimeagoModule,
+    ModalModule,
     FileUploadModule,
     TuiRootModule,
     TuiInputModule,

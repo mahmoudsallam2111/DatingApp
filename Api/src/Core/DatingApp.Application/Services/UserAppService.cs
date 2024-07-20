@@ -67,8 +67,8 @@ namespace DatingApp.Application.Services
             return new UserLoginDto
             {
                 Id = user.Id,
-                Name = user.UserName,
-                Token = _tokenService.CreateTokent(user.Id, user.UserName),
+                UserName = user.UserName,
+                Token = await _tokenService.CreateTokent(user),
                 PhotoUrl = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
                 KnownAs = user.KnownAs,
                 Gender = user.Gender,
@@ -78,7 +78,8 @@ namespace DatingApp.Application.Services
         public async Task<UserLoginDto> RegisterUser(RegisterUserDto registerUserDto)
         {
             if (await IsUserExist(registerUserDto.Name))
-                throw new Exception("this user Is exist");
+                throw new Exception("this Name is exist,U Can Register with anther one");
+
 
             Address address = new Address
             {
@@ -96,6 +97,10 @@ namespace DatingApp.Application.Services
 
             var result = await _userManager.CreateAsync(userToRegitser , registerUserDto.Password);
 
+            // assign the role member to registered user
+            await _userManager.AddToRoleAsync(userToRegitser, "Member");
+
+           
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -104,16 +109,14 @@ namespace DatingApp.Application.Services
                 }
             }
 
-            var user =await _userRepository.FindByUserName(registerUserDto.Name);
-
             return new UserLoginDto
             {
-                Id = user.Id,
-                Name = user.UserName,
-                Token = _tokenService.CreateTokent(user.Id, user.UserName),
-                PhotoUrl = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
-                KnownAs = user.KnownAs,
-                Gender = user.Gender,
+                Id = userToRegitser.Id,
+                UserName = userToRegitser.UserName,
+                Token = await _tokenService.CreateTokent(userToRegitser),
+                PhotoUrl = userToRegitser.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
+                KnownAs = userToRegitser.KnownAs,
+                Gender = userToRegitser.Gender,
             };
         }
 

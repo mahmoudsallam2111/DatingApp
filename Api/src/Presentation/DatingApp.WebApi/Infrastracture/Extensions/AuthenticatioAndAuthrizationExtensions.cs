@@ -10,16 +10,6 @@ namespace DatingApp.WebApi.Infrastracture.Extensions
     {
         public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services , IConfiguration config)
         {
-            //// configure identity (register it)
-            //services.AddIdentityCore<AppUserRole>(opt =>
-            //{
-            //    opt.Password.RequireNonAlphanumeric = false;
-            //})
-            //.AddRoles<AppRole>()
-            //.AddRoleManager<RoleManager<AppRole>>()
-            //.AddEntityFrameworkStores<ApplicationDbContext>();
-
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
@@ -32,7 +22,11 @@ namespace DatingApp.WebApi.Infrastracture.Extensions
                    };
                });
 
-            services.AddAuthorization();
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequiredAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratorOrAdminRole", policy => policy.RequireRole(new[] { "Admin"  , "Moderator" } ));
+            });
 
             return services;
 

@@ -44,7 +44,7 @@ export class MemberEditComponent implements OnInit {
 
   loadProfile() {
     if (!this.user) return;
-    this._memberservice.getMember(this.user.name).subscribe((response) => {
+    this._memberservice.getMember(this.user.userName).subscribe((response) => {
       this.member = response;
     });
   }
