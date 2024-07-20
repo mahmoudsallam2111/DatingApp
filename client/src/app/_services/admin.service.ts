@@ -13,4 +13,11 @@ export class AdminService {
   getUsersWithRoles() {
     return this._http.get<AuthUser[]>(this.baseUrl + 'Admin/GetUsersWithRole');
   }
+
+  updateUserRoles(userName: string, roles: string) {
+    return this._http.put<string[]>(
+      this.baseUrl + `Admin/edit-role/${userName}?roles=${roles}`,
+      {}
+    );
+  }
 }
