@@ -21,6 +21,11 @@ namespace DatingApp.Application.AutoMapper
 
             // for custom mapper
             CreateMap(typeof(PagesList<>), typeof(PagesList<>)).ConvertUsing(typeof(PagesListConverter<,>));
+
+            // mapper for message
+            CreateMap<Message, MessageDto>()
+                .ForMember(m => m.SenderPhotoUrl, u => u.MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
+                .ForMember(m => m.ReceiverPhotoUrl, u => u.MapFrom(u => u.Receiver.Photos.FirstOrDefault(p => p.IsMain).Url));
         }
     }
 }

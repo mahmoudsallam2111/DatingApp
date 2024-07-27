@@ -14,6 +14,7 @@ namespace DatingApp.Application
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IPhotoAppService,PhotoAppService>();
             services.AddScoped<ILikeAppService,LikeAppService>();
+            services.AddScoped<IMessagesAppService,MessagesAppService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;
