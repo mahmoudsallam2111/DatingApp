@@ -16,6 +16,7 @@ namespace DatingApp.Infrastructure.Persistence.Context
 
         public DbSet<UserPhoto> Photos { get; set; }
         public DbSet<UserLike> Likes { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

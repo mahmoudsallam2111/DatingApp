@@ -25,5 +25,7 @@ namespace DatingApp.Domain.Aggregates.AppUser.Entities
         public List<UserLike> LikedUsers { get; set; } = new();   // users that like that a specific user
 
         public ICollection<AppRole> AppRoles  { get; set; } = new List<AppRole>();
+        public List<Message> MessagesSend { get; set; } = new();
+        public List<Message> MessagesReceived { get; set; } = new();
     }
 }
