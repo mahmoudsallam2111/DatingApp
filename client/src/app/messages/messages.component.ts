@@ -11,11 +11,12 @@ import { MessageService } from '../_services/message.service';
 export class MessagesComponent implements OnInit {
   messages?: Message[];
   pagination?: Pagination;
-  container: string = 'UnRead';
+  container: string;
   pageNumber: number = 1;
   pageSize: number = 5;
 
   constructor(private _messageService: MessageService) {}
+
   ngOnInit(): void {
     this.loadMessages();
   }

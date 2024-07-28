@@ -14,11 +14,17 @@ export class MessageService {
 
   getMessages(pageNumber: number, pageSize: number, container: string) {
     let params = getPaginationHeaders(pageNumber, pageSize);
-    params.append('Container', container);
+    params = params.append('container', container); // Reassign the params variable
     return getPaginatedResult<Message[]>(
       this.baseUrl + 'messages/GetMessagesForUser',
       params,
       this._http
+    );
+  }
+
+  getMessagesThread(userName: string) {
+    return this._http.get<Message[]>(
+      this.baseUrl + 'Messages/GetMessageThead/' + userName
     );
   }
 }

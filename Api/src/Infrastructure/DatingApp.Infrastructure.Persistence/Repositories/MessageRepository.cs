@@ -67,7 +67,7 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
 
 
             var unReadMessages = messages
-                .Where(m=>m.DateRead == null && m.ReceiverName == currentUserName)
+                .Where(m=>m.ReceiverName == currentUserName)
                 .ToList();
 
                 unReadMessages?.ForEach(m => m.DateRead = DateTime.UtcNow);  // mark then as read  
