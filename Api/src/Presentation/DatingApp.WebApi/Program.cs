@@ -7,6 +7,7 @@ using DatingApp.Infrastructure.Persistence.Context.SeedingData;
 using DatingApp.WebApi.Handlers;
 using DatingApp.WebApi.Infrastracture.Extensions;
 using DatingApp.WebApi.Infrastracture.Filters;
+using DatingApp.WebApi.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
@@ -29,6 +30,7 @@ builder.Services.AddProblemDetails();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 builder.Services.AddScoped<LogUserActivity>();
+builder.Services.AddSignalR();
 #endregion
 
 
@@ -68,5 +70,7 @@ app.UseAuthenticationAndAuthorization();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<PresenceHub>("hubs/Presence");
 
 app.Run();

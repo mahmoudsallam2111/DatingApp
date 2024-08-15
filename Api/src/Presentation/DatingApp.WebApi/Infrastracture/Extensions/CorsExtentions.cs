@@ -8,9 +8,10 @@
             {
                 x.AddPolicy("Any", b =>
                 {
-                    b.AllowAnyOrigin();
                     b.AllowAnyHeader();
                     b.AllowAnyMethod();
+                    b.AllowCredentials();   // required for signalR
+                    b.WithOrigins("http://localhost:4200");
                 });
             });
         }
