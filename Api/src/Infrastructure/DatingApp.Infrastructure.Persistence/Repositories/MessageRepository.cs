@@ -2,6 +2,7 @@
 using DatingApp.Application.Interfaces;
 using DatingApp.Application.Interfaces.Repositories;
 using DatingApp.Domain.Aggregates.AppUser.Entities;
+using DatingApp.Domain.Aggregates.Group.Entities;
 using DatingApp.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -44,7 +45,6 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
 
             return await PagesList<Message>.CreateAsync(query, messageParams.PageNumber, messageParams.PageSize);
         }
-
         public async Task<IEnumerable<Message>> GetMessageTheadAsync(string currentUserName, string receivedName)
         {
             Expression<Func<Message, bool>> predicate =
@@ -66,15 +66,47 @@ namespace DatingApp.Infrastructure.Persistence.Repositories
                             .ToListAsync();
 
 
-            var unReadMessages = messages
-                .Where(m=>m.ReceiverName == currentUserName)
-                .ToList();
+            //var unReadMessages = messages
+            //    .Where(m=>m.ReceiverName == currentUserName)
+            //    .ToList();
 
-                unReadMessages?.ForEach(m => m.DateRead = DateTime.UtcNow);  // mark then as read  
+            if (messages.Count != 0)
+            {
+                messages.ForEach(x => x.DateRead = DateTime.UtcNow);
                 await _unitOfWork.SaveChangesAsync();
+            }
 
-            return unReadMessages;
+            return messages;
            
+        }
+
+        public void RemoveConnection(Connection connection)
+        {
+           _dbContext.Connections.Remove(connection);
+        }
+        public void AddGroup(Group group)
+        {
+            _dbContext.Groups.Add(group);   
+        }
+
+        public async Task<Connection> GetConnection(string connectionid)
+        {
+            return await _dbContext.Connections.FindAsync(connectionid);
+        }
+
+        public async Task<Group?> GetMessageGroup(string groupName)
+        {
+            return await _dbContext.Groups
+                .Include(x => x.Connections)
+                .FirstOrDefaultAsync(x => x.Name == groupName);
+        }
+
+        public async Task<Group?> GetGroupForConnection(string connectionId)
+        {
+            return await _dbContext.Groups
+                .Include(x => x.Connections)
+                .Where(g => g.Connections.Any(c=>c.ConnectionId==connectionId))
+                .FirstOrDefaultAsync();
         }
     }
 }

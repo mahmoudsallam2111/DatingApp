@@ -7,6 +7,13 @@
         alt="{{ member.knownAs }}"
       />
       <div class="card-body">
+        <div
+          *ngIf="
+            (_PresenceService.onlineUsers$ | async)?.includes(member.userName)
+          "
+        >
+          <i class="class fa fa-user-circle text-success"></i> online Now
+        </div>
         <div>
           <strong>Location:</strong>
           <p>{{ member.address.city }} , {{ member.address.country }}</p>
@@ -17,7 +24,7 @@
         </div>
         <div>
           <strong>Last Active:</strong>
-          <p>{{ member.lastActive + "Z" | timeago }}</p>
+          <p>{{ member.lastActive | timeago }}</p>
         </div>
       </div>
       <div class="card-footer">
@@ -50,10 +57,7 @@
         </div>
       </tab>
       <tab heading="Messages" (selectTab)="onTabActivated($event)">
-        <app-member-messages
-          [userName]="member.userName"
-          [messages]="messages"
-        ></app-member-messages>
+        <app-member-messages [userName]="member.userName"></app-member-messages>
       </tab>
     </tabset>
   </div>

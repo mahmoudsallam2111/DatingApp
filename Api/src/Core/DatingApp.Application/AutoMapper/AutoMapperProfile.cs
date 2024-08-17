@@ -26,6 +26,9 @@ namespace DatingApp.Application.AutoMapper
             CreateMap<Message, MessageDto>()
                 .ForMember(m => m.SenderPhotoUrl, u => u.MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
                 .ForMember(m => m.ReceiverPhotoUrl, u => u.MapFrom(u => u.Receiver.Photos.FirstOrDefault(p => p.IsMain).Url));
+
+            CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+            CreateMap<DateTime?, DateTime?>().ConvertUsing(d  => d.HasValue ? DateTime.SpecifyKind(d.Value , DateTimeKind.Utc) : null);
         }
     }
 }

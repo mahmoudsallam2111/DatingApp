@@ -1,8 +1,10 @@
 ﻿using DatingApp.Domain.Aggregates.AppUser.Entities;
+using DatingApp.Domain.Aggregates.Group.Entities;
 using DatingApp.Domain.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace DatingApp.Infrastructure.Persistence.Context
 {
@@ -17,6 +19,8 @@ namespace DatingApp.Infrastructure.Persistence.Context
         public DbSet<UserPhoto> Photos { get; set; }
         public DbSet<UserLike> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Domain.Aggregates.Group.Entities.Group>  Groups { get; set; }
+        public DbSet<Connection> Connections { get; set; }
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

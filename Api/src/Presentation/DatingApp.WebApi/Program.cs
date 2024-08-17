@@ -31,6 +31,7 @@ builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(
 
 builder.Services.AddScoped<LogUserActivity>();
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<PresenceTracker>();   // since we not want to distory it once http request completed
 #endregion
 
 
@@ -48,6 +49,7 @@ using (var scope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
+    await context.Database.ExecuteSqlRawAsync("truncate table [Connections]");  // trancate connection table when application start
     //Seed Data
     await Seed.SeedUser(userManager , roleManager);
 }
@@ -72,5 +74,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<PresenceHub>("hubs/Presence");
+app.MapHub<MessageHub>("hubs/message");
 
 app.Run();

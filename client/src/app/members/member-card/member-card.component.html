@@ -20,7 +20,11 @@
         </button>
       </li>
       <li class="list-inline-item">
-        <button class="bn btn-primary">
+        <button
+          routerLink="/members/{{ member.userName }}"
+          [queryParams]="{ tab: 'Messages' }"
+          class="bn btn-primary"
+        >
           <i style="color: orangered" class="fa fa-envelope fa-2x"></i>
         </button>
       </li>
@@ -28,7 +32,16 @@
   </div>
   <div class="card-body p-1">
     <h6 class="card-title text-center mb-1">
-      <i class="fa fa-user me-2">{{ member.knownAs }},{{ member.age }}</i>
+      <span
+        [ngClass]="{
+          'is-online': (_PresenceService.onlineUsers$ | async)?.includes(
+            member.userName
+          )
+        }"
+      >
+        <i class="fa fa-user me-2"> </i>
+      </span>
+      {{ member.knownAs }},{{ member.age }}
     </h6>
     <p *ngIf="member.address" class="card-text text-muted text-center">
       {{ member.address.city }}
