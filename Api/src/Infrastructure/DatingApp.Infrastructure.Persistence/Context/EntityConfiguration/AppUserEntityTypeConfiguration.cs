@@ -2,6 +2,8 @@
 using DatingApp.Domain.Aggregates.AppUser.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.VisualBasic;
+using System.Data;
 
 namespace DatingApp.Infrastructure.Persistence.Context.EntityConfiguration
 {
@@ -29,12 +31,9 @@ namespace DatingApp.Infrastructure.Persistence.Context.EntityConfiguration
             builder.Property(u => u.Age)
              .HasComputedColumnSql("DATEDIFF(year, DateOfBirth, GETDATE())");
 
-
-            //builder.HasMany(u => u.UserRoles)
-            //    .WithOne(ur => ur.User)
-            //    .HasForeignKey(u => u.UserId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.Property<byte[]>("RowVersion")
+                .IsRowVersion()
+                .HasColumnName("RowVersion");
 
         }
     }

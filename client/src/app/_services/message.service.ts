@@ -3,10 +3,12 @@ import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 import { Message } from '../_models/message';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import signalR, {
+  HubConnection,
+  HubConnectionBuilder,
+} from '@microsoft/signalr';
 import { AuthUser } from '../_models/authUser';
 import { BehaviorSubject, take } from 'rxjs';
-import { Group } from '../_models/group';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +25,8 @@ export class MessageService {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'message?user=' + otherUsername, {
         accessTokenFactory: () => user.token,
+        // transport: signalR.HttpTransportType.WebSockets   // choose the default transport
+        // skipNegotiation: true, // disaple the nogotiation transport
       })
       .withAutomaticReconnect()
       .build();
@@ -32,7 +36,7 @@ export class MessageService {
       .then(() => {
         console.log('SignalR connected');
         // Setup event handlers after connection is established
-        this.setupListeners(otherUsername);
+        this.setupListeners();
       })
       .catch((error) => {
         console.error('Error while starting connection: ', error);
@@ -41,39 +45,22 @@ export class MessageService {
     this.hubConnection.onreconnected(() => {
       console.log('SignalR connection reconnected');
       // Re-setup listeners if needed
-      this.setupListeners(otherUsername);
+      this.setupListeners();
     });
   }
 
-  private setupListeners(otherUsername: string) {
+  private setupListeners() {
     if (this.hubConnection) {
-      /// handle RecieveMessageThread
       this.hubConnection.on('RecieveMessageThread', (messages) => {
         this.messageThreadSources.next(messages);
       });
-      /// NewMessage
+
       this.hubConnection.on('NewMessage', (message) => {
         this.messageThread$.pipe(take(1)).subscribe({
           next: (messages) => {
             this.messageThreadSources.next([...messages, message]);
           },
         });
-      });
-      /// handle UpdateGroup
-      this.hubConnection.on('UpdateGroup', (group: Group) => {
-        if (group.connections.some((c) => c.username === otherUsername)) {
-          this.messageThread$.pipe(take(1)).subscribe({
-            next: (messages) => {
-              messages.forEach((message) => {
-                if (!message.dateRead) {
-                  message.dateRead = new Date(Date.now());
-                }
-              });
-
-              this.messageThreadSources.next([...messages]);
-            },
-          });
-        }
       });
     } else {
       console.log('HubConnection is not initialized.');

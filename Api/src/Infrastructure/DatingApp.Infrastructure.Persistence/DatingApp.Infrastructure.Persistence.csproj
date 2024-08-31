@@ -16,8 +16,4 @@
     <ProjectReference Include="..\..\Core\DatingApp.Domain\DatingApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

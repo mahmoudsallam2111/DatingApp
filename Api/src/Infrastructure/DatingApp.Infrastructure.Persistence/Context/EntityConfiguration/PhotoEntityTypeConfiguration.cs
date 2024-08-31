@@ -22,6 +22,10 @@ namespace DatingApp.Infrastructure.Persistence.Context.EntityConfiguration
                 .WithMany(u => u.Photos)
                 .HasForeignKey(p => p.AppUserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property<byte[]>("RowVersion")
+                .IsRowVersion()
+                .HasColumnName("RowVersion");
         }
     }
 }

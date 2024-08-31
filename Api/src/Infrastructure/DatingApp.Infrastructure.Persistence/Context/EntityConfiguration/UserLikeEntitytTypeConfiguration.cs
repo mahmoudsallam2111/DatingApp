@@ -20,6 +20,10 @@ namespace DatingApp.Infrastructure.Persistence.Context.EntityConfiguration
                  .HasForeignKey(u => u.TargetUserId)
                  .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Property<byte[]>("RowVersion")
+                .IsRowVersion()
+                .HasColumnName("RowVersion");
+
         }
     }
 }

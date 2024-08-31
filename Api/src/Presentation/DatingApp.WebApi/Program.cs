@@ -30,7 +30,13 @@ builder.Services.AddProblemDetails();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 builder.Services.AddScoped<LogUserActivity>();
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(s =>
+{
+    if (!builder.Environment.IsProduction())   // use it only in development mode
+    {
+        s.EnableDetailedErrors = true;   // is dangerous in term of attacking , cause it provide sensitive data on the browser
+    }
+});
 builder.Services.AddSingleton<PresenceTracker>();   // since we not want to distory it once http request completed
 #endregion
 

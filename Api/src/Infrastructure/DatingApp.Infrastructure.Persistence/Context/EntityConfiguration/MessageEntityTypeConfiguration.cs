@@ -18,6 +18,10 @@ namespace DatingApp.Infrastructure.Persistence.Context.EntityConfiguration
                 .WithMany(u => u.MessagesSend)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Property<byte[]>("RowVersion")
+                .IsRowVersion()
+                .HasColumnName("RowVersion");
+
         }
     }
 }
